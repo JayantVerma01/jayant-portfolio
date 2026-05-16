@@ -1,0 +1,270 @@
+.about {
+  background: var(--bg-secondary);
+  position: relative;
+}
+
+.about::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-primary), var(--accent-secondary), transparent);
+  opacity: 0.5;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Bio card */
+.bioCard {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: sticky;
+  top: calc(var(--nav-height) + 24px);
+  transition: all var(--transition-base);
+}
+
+.bioCard:hover {
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Avatar */
+.avatarWrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.avatarRing {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  animation: rotate-slow 8s linear infinite;
+  opacity: 0.8;
+}
+
+.avatarRing::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+}
+
+.avatar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+}
+
+.avatarInitials {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.avatarGlow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.2), transparent 70%);
+  z-index: 0;
+}
+
+/* Bio info */
+.bioInfo { text-align: center; }
+
+.bioName {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.bioRole {
+  font-size: 0.9rem;
+  color: var(--accent-primary);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.bioText {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.bioMeta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--bg-glass);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.metaLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.metaValue {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Right column */
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Highlights */
+.highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.highlightCard {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.highlightIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.highlightTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.highlightDesc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Journey card */
+.journeyCard {
+  padding: 28px;
+}
+
+.journeyTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent-primary), var(--accent-cyan), var(--accent-green));
+  opacity: 0.3;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: 20px 52px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.timelineDot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-primary);
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+}
+
+.timelineYear {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.timelineEvent {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 968px) {
+  .grid { grid-template-columns: 1fr; }
+  .bioCard { position: static; }
+  .highlights { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .highlights { grid-template-columns: 1fr; }
+  .bioMeta { grid-template-columns: 1fr; }
+}

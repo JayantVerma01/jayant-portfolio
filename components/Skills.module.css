@@ -1,0 +1,112 @@
+.skills {
+  background: var(--bg-primary);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--transition-base);
+  font-family: inherit;
+}
+
+.tab:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.tabActive {
+  color: var(--text-primary) !important;
+  background: rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Skill panel */
+.content {
+  min-height: 300px;
+}
+
+.skillPanel {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.skillCard {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.skillName {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* Cloud */
+.cloudSection {
+  margin-top: 72px;
+  text-align: center;
+}
+
+.cloudTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.cloudTag {
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid;
+  cursor: default;
+  transition: all var(--transition-fast);
+}
+
+@media (max-width: 640px) {
+  .tabs { gap: 8px; }
+  .tab { padding: 8px 16px; font-size: 0.82rem; }
+  .skillPanel { grid-template-columns: 1fr; }
+}

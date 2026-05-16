@@ -1,0 +1,236 @@
+.experience {
+  background: var(--bg-primary);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.timelineLine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--accent-primary) 10%,
+    var(--accent-secondary) 50%,
+    var(--accent-cyan) 90%,
+    transparent
+  );
+  opacity: 0.4;
+}
+
+/* Item */
+.item {
+  position: relative;
+  width: calc(50% - 40px);
+  margin-bottom: 56px;
+}
+
+.itemLeft {
+  left: 0;
+  text-align: right;
+}
+
+.itemRight {
+  left: calc(50% + 40px);
+  text-align: left;
+}
+
+/* Dot */
+.dot {
+  position: absolute;
+  top: 28px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid;
+  background: var(--bg-primary);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.itemLeft .dot {
+  right: -52px;
+}
+
+.itemRight .dot {
+  left: -52px;
+}
+
+.dotInner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Card */
+.card {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.itemLeft .cardTop {
+  flex-direction: row-reverse;
+}
+
+.roleIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.roleInfo {
+  flex: 1;
+}
+
+.itemLeft .roleInfo {
+  text-align: right;
+}
+
+.roleTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.company {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.currentBadge {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #10b981;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+/* Meta */
+.meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.itemLeft .meta {
+  justify-content: flex-end;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Description */
+.desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Achievements */
+.achievements {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.achievement {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.itemLeft .achievement {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+/* Tech */
+.tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.itemLeft .tech {
+  justify-content: flex-end;
+}
+
+.techTag {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Responsive: stack on mobile */
+@media (max-width: 768px) {
+  .timelineLine { left: 20px; }
+
+  .item {
+    width: 100%;
+    left: 0 !important;
+    padding-left: 52px;
+    text-align: left !important;
+  }
+
+  .itemLeft .cardTop,
+  .itemLeft .meta,
+  .itemLeft .tech,
+  .itemLeft .achievement,
+  .itemLeft .roleInfo {
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+
+  .dot {
+    left: 12px !important;
+    right: auto !important;
+  }
+}
