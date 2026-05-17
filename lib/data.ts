@@ -187,6 +187,7 @@ export const projects = [
     live: "https://crm.cubicleweb.com/",
     featured: false,
     category: "Enterprise",
+    color: "#0563eb",
     stats: { commits: "20+", features: "10+" },
   },
   {

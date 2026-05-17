@@ -3,13 +3,11 @@ import { Resend } from "resend";
 import { personalInfo } from "@/lib/data";
 
 export async function POST(req: NextRequest) {
-  // Initialize Resend inside the handler to prevent build-time errors on Vercel
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     const { name, email, subject, message } = await req.json();
 
-    // Basic validation
     if (!name || !email || !message) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -18,18 +16,20 @@ export async function POST(req: NextRequest) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'Portfolio Contact <onboarding@resend.dev>',
-      to: [personalInfo.email],
+      from:
+        process.env.RESEND_FROM_EMAIL ||
+        "Portfolio Contact <onboarding@resend.dev>",
+      to: ["vermajayant03@gmail.com"],
       replyTo: email,
       subject: subject || `New message from ${name} via Portfolio`,
       html: `
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Subject:</strong> ${subject || 'No subject'}</p>
+        <p><strong>Subject:</strong> ${subject || "No subject"}</p>
         <br />
         <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br />')}</p>
+        <p>${message.replace(/\n/g, "<br />")}</p>
       `,
     });
 
