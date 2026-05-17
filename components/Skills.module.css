@@ -108,5 +108,10 @@
 @media (max-width: 640px) {
   .tabs { gap: 8px; }
   .tab { padding: 8px 16px; font-size: 0.82rem; }
+  .skillPanel { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
   .skillPanel { grid-template-columns: 1fr; }
+  .skillCard { padding: 16px 20px; }
 }

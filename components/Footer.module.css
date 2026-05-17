@@ -153,11 +153,15 @@
 }
 
 @media (max-width: 768px) {
-  .inner { grid-template-columns: 1fr 1fr; }
+  .footer { padding: 48px 0 24px; }
+  .inner { grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px; }
   .brand { grid-column: 1 / -1; }
 }
 
 @media (max-width: 480px) {
   .inner { grid-template-columns: 1fr; }
-  .bottom { flex-direction: column; gap: 16px; }
+  .bottom { flex-direction: column; gap: 16px; text-align: center; }
+  .socials { justify-content: center; }
+  .brand { align-items: center; text-align: center; }
+  .tagline { margin: 0 auto; }
 }

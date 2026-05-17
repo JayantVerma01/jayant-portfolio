@@ -186,7 +186,7 @@ export const projects = [
     github: "#",
     live: "https://crm.cubicleweb.com/",
     featured: false,
-    category: "SaaS",
+    category: "Enterprise",
     stats: { commits: "20+", features: "10+" },
   },
   {

@@ -1,5 +1,6 @@
 .contact {
   background: var(--bg-secondary);
+  overflow-x: hidden;
 }
 
 .header {
@@ -84,6 +85,8 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-primary);
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .extras {
@@ -231,6 +234,11 @@
   .infoCard { position: static; }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .formRow { grid-template-columns: 1fr; }
+  .infoCard, .formCard { padding: 28px; }
+}
+
+@media (max-width: 480px) {
+  .infoCard, .formCard { padding: 20px; }
 }

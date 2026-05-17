@@ -260,11 +260,13 @@
 
 @media (max-width: 968px) {
   .grid { grid-template-columns: 1fr; }
-  .bioCard { position: static; }
+  .bioCard { position: static; padding: 28px; }
+  .journeyCard { padding: 20px; }
   .highlights { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 480px) {
+  .bioCard { padding: 20px; }
   .highlights { grid-template-columns: 1fr; }
   .bioMeta { grid-template-columns: 1fr; }
 }

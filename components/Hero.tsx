@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { ArrowDown, Download, Mail } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
@@ -25,9 +25,6 @@ const SOCIAL = [
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 600], [0, 150]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
   const scrollToAbout = () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
@@ -67,7 +64,7 @@ export default function Hero() {
       {/* Grid overlay */}
       <div className={styles.grid} aria-hidden="true" />
 
-      <motion.div className={styles.content} style={{ y, opacity }}>
+      <div className={styles.content}>
         {/* Status badge */}
         <motion.div
           className={styles.statusBadge}
@@ -207,7 +204,7 @@ export default function Hero() {
             </div>
           ))}
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Floating tech icons */}
       <div className={styles.floatingIcons} aria-hidden="true">
@@ -238,7 +235,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <motion.button
+      {/* <motion.button
         className={styles.scrollIndicator}
         onClick={scrollToAbout}
         initial={{ opacity: 0 }}
@@ -253,7 +250,7 @@ export default function Hero() {
         >
           <ArrowDown size={20} />
         </motion.div>
-      </motion.button>
+      </motion.button> */}
     </section>
   );
 }

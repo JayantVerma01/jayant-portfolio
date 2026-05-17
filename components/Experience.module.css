@@ -209,7 +209,7 @@
 }
 
 /* Responsive: stack on mobile */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .timelineLine { left: 20px; }
 
   .item {
@@ -230,7 +230,14 @@
   }
 
   .dot {
-    left: 12px !important;
+    left: 10px !important;
     right: auto !important;
   }
+}
+
+@media (max-width: 480px) {
+  .card { padding: 20px; }
+  .item { padding-left: 44px; }
+  .timelineLine { left: 16px; }
+  .dot { left: 6px !important; }
 }

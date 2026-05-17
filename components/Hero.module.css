@@ -301,10 +301,26 @@
   color: var(--accent-primary);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .floatingIcons { display: none; }
-  .stats { gap: 24px; }
+  .blob { transform: scale(0.8); }
+  .stats { gap: 32px; }
+  .stat:not(:last-child) { padding-right: 32px; }
+}
+
+@media (max-width: 768px) {
+  .blob { transform: scale(0.6); }
+  .stats { gap: 24px; flex-wrap: nowrap; justify-content: center; }
   .stat:not(:last-child) { padding-right: 24px; }
-  .ctas { flex-direction: column; align-items: stretch; }
-  .ctas .btn { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .blob { transform: scale(0.4); }
+  .stats { flex-direction: row; gap: 12px; align-items: center; width: 100%; justify-content: center; flex-wrap: nowrap; }
+  .stat:not(:last-child) { padding-right: 12px; border-right: 1px solid var(--border-color); border-bottom: none; padding-bottom: 0; width: auto; }
+  .socials { margin-bottom: 40px; }
+  .ctas { flex-direction: row; align-items: center; justify-content: center; gap: 10px; flex-wrap: nowrap; width: 100%; }
+  .ctas .btn { padding: 10px 14px; font-size: 0.8rem; white-space: nowrap; }
+  .statNum { font-size: 1.4rem; }
+  .statLabel { font-size: 0.65rem; }
 }

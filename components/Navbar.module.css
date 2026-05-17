@@ -160,22 +160,24 @@
 /* Mobile menu */
 .mobileMenu {
   position: fixed;
-  top: var(--nav-height);
-  left: 0;
-  right: 0;
+  top: calc(var(--nav-height) + 12px);
+  left: 16px;
+  right: 16px;
+  border-radius: var(--radius-lg);
   z-index: 999;
   background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-elevated);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  padding: 16px 24px 24px;
+  padding: 20px;
 }
 
 .mobileLinks {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
 .mobileLink {
@@ -183,9 +185,9 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-radius: var(--radius-md);
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: var(--text-secondary);
   text-align: left;
