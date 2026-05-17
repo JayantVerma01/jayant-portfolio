@@ -152,6 +152,20 @@
   color: var(--accent-primary);
 }
 
+.highlight{
+  color: var(--accent-primary);
+  cursor: pointer;
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+.highlight:hover{
+  color: var(--accent-primary);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color var(--transition-fast);
+}
+
 @media (max-width: 768px) {
   .footer { padding: 48px 0 24px; }
   .inner { grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px; }

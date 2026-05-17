@@ -17,7 +17,7 @@ export const personalInfo = {
   resume: "/JAYANT VERMA RESUME.pdf",
   experienceYears: "1.5+",
   projectsCount: "9+",
-  technologiesCount: "15+",
+  technologiesCount: "10+",
 };
 
 export const skills = [

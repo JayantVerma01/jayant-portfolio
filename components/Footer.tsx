@@ -1,12 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, Mail, ArrowUp } from "lucide-react";
+import { Mail, ArrowUp } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { personalInfo, navLinks } from "@/lib/data";
 import styles from "./Footer.module.css";
 
 export default function Footer() {
+  const message = encodeURIComponent("Hi Jayant, I'm interested in working with you.");
+  const redirectToWhatsapp = () => {
+    window.open(`https://wa.me/919588965801?text=${message}`, "message", "width=600,height=600,left=500,top=200,menubar=no,status=no,titlebar=no");
+  }
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
@@ -75,10 +79,11 @@ export default function Footer() {
         {/* Bottom */}
         <div className={styles.bottom}>
           <p className={styles.copy}>
-            © {new Date().getFullYear()} Jayant Verma. Made with{" "}
-            <Heart size={14} fill="currentColor" style={{ color: "#ef4444", display: "inline" }} />{" "}
-            in India.
+            © {new Date().getFullYear()} .Designed and Built by{" "}
+            <span onClick={redirectToWhatsapp}
+            className={styles.highlight}>Jayant Verma.</span>
           </p>
+
           <motion.button
             className={styles.scrollTop}
             onClick={scrollTop}
