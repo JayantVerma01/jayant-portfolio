@@ -1,10 +1,13 @@
 .experience {
   background: var(--bg-primary);
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .header {
   text-align: center;
   margin-bottom: 80px;
+  padding: 0 15px;
 }
 
 /* Timeline */
@@ -38,6 +41,7 @@
   position: relative;
   width: calc(50% - 40px);
   margin-bottom: 56px;
+  box-sizing: border-box;
 }
 
 .itemLeft {
@@ -66,11 +70,11 @@
 }
 
 .itemLeft .dot {
-  right: -52px;
+  right: -50px;
 }
 
 .itemRight .dot {
-  left: -52px;
+  left: -50px;
 }
 
 .dotInner {
@@ -109,6 +113,7 @@
 
 .roleInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .itemLeft .roleInfo {
@@ -121,11 +126,13 @@
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 2px;
+  word-break: break-word;
 }
 
 .company {
   font-size: 0.9rem;
   font-weight: 600;
+  word-break: break-word;
 }
 
 .currentBadge {
@@ -237,7 +244,27 @@
 
 @media (max-width: 480px) {
   .card { padding: 20px; }
-  .item { padding-left: 44px; }
-  .timelineLine { left: 16px; }
-  .dot { left: 6px !important; }
+  .item { padding-left: 40px; }
+  .timelineLine { left: 14px; }
+  .dot { left: 4px !important; }
+  .roleIcon {
+    width: 38px;
+    height: 38px;
+  }
+  .cardTop {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .meta {
+    gap: 10px;
+  }
+  .roleTitle {
+    font-size: 1.05rem;
+  }
+  .company {
+    font-size: 0.85rem;
+  }
+  .header {
+    margin-bottom: 50px;
+  }
 }
