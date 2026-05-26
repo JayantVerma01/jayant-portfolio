@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Star, Tag } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
 import { projects } from "@/lib/data";
 import styles from "./Projects.module.css";
 
-const CATEGORIES = ["All", "E-Commerce", "EPC", "Cloud Storage", "AI / ML", "Blockchain", "Enterprise", "Social Media"];
+const CATEGORIES = ["All", "E-Commerce", "EPC", "Cloud Storage", "AI / ML", "Blockchain", "Enterprise", "Web Application"];
 
 export default function Projects() {
   const [filter, setFilter] = useState("All");
@@ -104,7 +103,7 @@ export default function Projects() {
                     {project.category === "Enterprise" && "🏢"}
                     {project.category === "EPC" && "🏗️"}
                     {project.category === "Cloud Storage" && "☁️"}
-                    {project.category === "Social Media" && "👥"}
+                    {project.category === "Web Application" && "🌐"}
                   </span>
                 </div>
 

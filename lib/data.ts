@@ -16,7 +16,7 @@ export const personalInfo = {
   linkedin: "https://linkedin.com/in/jayantverma1",
   resume: "/JAYANT VERMA RESUME.pdf",
   experienceYears: "1.5+",
-  projectsCount: "9+",
+  projectsCount: "10+",
   technologiesCount: "10+",
 };
 
@@ -82,6 +82,19 @@ export const skills = [
       { name: "CI/CD", level: 68 },
     ],
   },
+  {
+    category: "TPS Integrations",
+    icon: "🏭",
+    color: "#2196f3",
+    items: [
+      { name: "SAP Integrations", level: 80 },
+      { name: "Delhivery B2B & B2C", level: 85 },
+      { name: "Razorpay", level: 80 },
+      { name: "Shiprocket", level: 80 },
+      { name: "Cloudinary", level: 80 },
+      { name: "Resend", level: 75 }
+    ],
+  }
 ];
 
 export const projects = [
@@ -132,6 +145,20 @@ export const projects = [
   },
   {
     id: 4,
+    title: "Naruto Jutsu AR",
+    description: "A web application that uses MediaPipe Hands to track hand movements and render procedural visual effects.",
+    longDescription: "A web application that uses MediaPipe Hands to track hand movements and render procedural visual effects. Features include Rasengan, Chidori, and projectile physics.",
+    tech: ["HTML", "CSS", "JavaScript", "MediaPipe", "JS Utilities"],
+    github: "https://github.com/JayantVerma01/naruto-jutsu-ar",
+    live: "https://jayantverma01.github.io/naruto-jutsu-ar/",
+    featured: true,
+    category: "Web Application",
+    color: "#f59e0b",
+    stats: { commits: "10+", features: "5+" },
+
+  },
+  {
+    id: 5,
     title: "DToC — Direct to Creator",
     description:
       "An NFT marketplace connecting digital creators directly with collectors. Features wallet integration, NFT minting, listing, bidding, and real-time transaction updates.",
@@ -146,7 +173,7 @@ export const projects = [
     stats: { commits: "120+", features: "20+" },
   },
   {
-    id: 5,
+    id: 6,
     title: "Decentralized Voting System",
     description:
       "A blockchain-based voting platform ensuring transparency, immutability, and security for elections. Built on Ethereum with IPFS-stored voter credentials.",
@@ -161,7 +188,7 @@ export const projects = [
     stats: { commits: "90+", features: "12+" },
   },
   {
-    id: 6,
+    id: 7,
     title: "Gemac HR Management",
     description:
       "Enterprise HR management system with employee onboarding, leave management, payroll processing, performance reviews, and role-based access control.",
@@ -176,7 +203,7 @@ export const projects = [
     stats: { commits: "150+", features: "25+" },
   },
   {
-    id: 7,
+    id: 8,
     title: "Cubicle",
     description:
       "Cubicle is a SaaS based tool that help to manage daily office work in just one click.",
@@ -191,7 +218,7 @@ export const projects = [
     stats: { commits: "20+", features: "10+" },
   },
   {
-    id: 8,
+    id: 9,
     title: "Azon Hub",
     description:
       "A full-stack e-commerce application with product catalog, cart management, user authentication, order processing, and admin product management.",
@@ -206,7 +233,7 @@ export const projects = [
     stats: { commits: "70+", features: "18+" },
   },
   {
-    id: 9,
+    id: 10,
     title: "Pixteria",
     description:
       "Pixteria is a social media platform with real-time messaging, user authentication, image/video sharing, and profile management.",
@@ -216,7 +243,7 @@ export const projects = [
     github: "https://github.com/JayantVerma01/Pixteria",
     live: "https://github.com/JayantVerma01/Pixteria",
     featured: false,
-    category: "Social Media",
+    category: "Web Application",
     color: "#06b6d4",
     stats: { commits: "70+", features: "18+" },
   }
