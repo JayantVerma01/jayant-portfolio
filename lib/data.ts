@@ -3,8 +3,8 @@
 export const personalInfo = {
   name: "Jayant Verma",
   taglines: [
-    "Full Stack Developer",
-    "Next.js Specialist",
+    "AI Full Stack Developer",
+    "Next.js Developer",
     "Node.js Engineer",
     "React.js Developer",
     "AI Integration Expert",

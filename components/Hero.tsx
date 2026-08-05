@@ -127,7 +127,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65, duration: 0.8 }}
         >
-          Full Stack Developer with{" "}
+          AI Full Stack Developer with{" "}
           <strong style={{ color: "var(--accent-primary)" }}>1.5+ years</strong>{" "}
           of experience building scalable web applications and AI-powered solutions. I build seamless web experiences with React.js and Next.js, and robust backend APIs with Node.js. I love exploring the intersection of web development and AI to create intelligent, user-centric products.
         </motion.p>
