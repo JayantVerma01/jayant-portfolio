@@ -29,6 +29,7 @@ export const skills = [
       { name: "Node.js", level: 90 },
       { name: "Express.js", level: 88 },
       { name: "REST APIs", level: 92 },
+      { name: "FastAPI", level: 92 },
       { name: "JWT Authorization", level: 85 },
       { name: "RBAC", level: 80 }
     ],
@@ -44,7 +45,8 @@ export const skills = [
       { name: "Tailwind CSS", level: 93 },
       { name: "Redux Toolkit", level: 75 },
       { name: "Hooks", level: 75 },
-      { name: "SSR", level: 75 }
+      { name: "SSR", level: 75 },
+      { name: "SSG", level: 75 }
     ],
   },
   {
@@ -54,9 +56,22 @@ export const skills = [
     items: [
       { name: "OpenAI API", level: 85 },
       { name: "LangChain", level: 72 },
+      { name: "LangGraph", level: 72 },
       { name: "RAG", level: 88 },
       { name: "Vector Databases", level: 68 },
       { name: "AI Integration", level: 82 },
+      { name: "Vision Pipeline", level: 82 },
+    ],
+  },
+  {
+    category: "Languages",
+    icon: "🐍",
+    color: "#ef4444",
+    items: [
+      { name: "JavaScript", level: 92 },
+      { name: "TypeScript", level: 85 },
+      { name: "SQL", level: 75 },
+      { name: "Python", level: 88 },
     ],
   },
   {
@@ -76,7 +91,9 @@ export const skills = [
     color: "#f59e0b",
     items: [
       { name: "Git / GitHub", level: 92 },
+      { name: "Docker", level: 92 },
       { name: "Docker Compose", level: 72 },
+      { name: "GitHub Actions", level: 92 },
       { name: "Vercel / Netlify", level: 88 },
       { name: "AWS (EC2, S3, SES)", level: 70 },
       { name: "CI/CD", level: 68 },
@@ -90,7 +107,7 @@ export const skills = [
       { name: "SAP Integrations", level: 80 },
       { name: "Delhivery B2B & B2C", level: 85 },
       { name: "Razorpay", level: 80 },
-      { name: "Shiprocket", level: 80 },
+      { name: "Shipmozo", level: 80 },
       { name: "Cloudinary", level: 80 },
       { name: "Resend", level: 75 }
     ],
@@ -100,6 +117,21 @@ export const skills = [
 export const projects = [
   {
     id: 1,
+    title: "Trade-Analyser AI",
+    description:
+      "Trade-Analyser AI is a web application that analyzes stock market data and provides insights to traders.",
+    longDescription:
+      "Trade-Analyser AI is a comprehensive stock market analysis platform that leverages AI-driven insights and visualizations to empower traders with actionable intelligence. The platform features advanced technical analysis tools, real-time market data, and intelligent pattern recognition to help users make informed trading decisions.",
+    tech: ["FastAPI", "LangGraph", "LangChain", "Vision Pipeline", "RAG", "PostgreSQL", "Docker", "Next.js", "Node.js",],
+    github: "https://github.com/JayantVerma01/Trade-Analyser",
+    live: "https://trade-analyser-mu.vercel.app/",
+    featured: true,
+    category: "AI / ML",
+    color: "#992b2b",
+    stats: { commits: "30+", features: "15+" },
+  },
+  {
+    id: 2,
     title: "All About Packing",
     description:
       "A full-featured e-commerce platform for packaging products with admin dashboard, inventory management, bulk discount system, coupon codes, payment integration, and real-time order tracking.",
@@ -114,7 +146,7 @@ export const projects = [
     stats: { commits: "200+", features: "10+" },
   },
   {
-    id: 2,
+    id: 3,
     title: "Buildsync",
     description:
       "BuildSync is a construction workflow platform that digitizes site operations like material, machine, RFI, gate entry, and approvals to improve tracking and coordination.",
@@ -129,7 +161,7 @@ export const projects = [
     stats: { commits: "1500+", features: "30+" },
   },
   {
-    id: 3,
+    id: 4,
     title: "AI Powered Document Query System",
     description:
       "A RAG-based document search system using LangChain, OpenAI API, and vector embeddings to enable semantic search across enterprise documents.",
@@ -144,7 +176,22 @@ export const projects = [
     stats: { commits: "80+", features: "15+" },
   },
   {
-    id: 4,
+    id: 5,
+    title: "Bulk Mailer",
+    description:
+      "Mail service that sends bulk emails to the users.",
+    longDescription:
+      "A complete mail service that sends bulk emails to the users.",
+    tech: ["Node.js", "Express.js", "HTML", "CSS", "NodeMailer", "JS"],
+    github: "https://github.com/JayantVerma01/Mailer",
+    live: "https://mailer-alpha-lime.vercel.app/",
+    featured: true,
+    category: "Web Application",
+    color: "#80c04e",
+    stats: { commits: "10+", features: "2+" },
+  },
+  {
+    id:  6,
     title: "Naruto Jutsu AR",
     description: "A web application that uses MediaPipe Hands to track hand movements and render procedural visual effects.",
     longDescription: "A web application that uses MediaPipe Hands to track hand movements and render procedural visual effects. Features include Rasengan, Chidori, and projectile physics.",
@@ -158,7 +205,7 @@ export const projects = [
 
   },
   {
-    id: 5,
+    id: 7,
     title: "DToC — Direct to Creator",
     description:
       "An NFT marketplace connecting digital creators directly with collectors. Features wallet integration, NFT minting, listing, bidding, and real-time transaction updates.",
@@ -173,7 +220,7 @@ export const projects = [
     stats: { commits: "120+", features: "20+" },
   },
   {
-    id: 6,
+    id: 8,
     title: "Decentralized Voting System",
     description:
       "A blockchain-based voting platform ensuring transparency, immutability, and security for elections. Built on Ethereum with IPFS-stored voter credentials.",
@@ -188,7 +235,7 @@ export const projects = [
     stats: { commits: "90+", features: "12+" },
   },
   {
-    id: 7,
+    id: 9,
     title: "Gemac HR Management",
     description:
       "Enterprise HR management system with employee onboarding, leave management, payroll processing, performance reviews, and role-based access control.",
@@ -203,7 +250,7 @@ export const projects = [
     stats: { commits: "150+", features: "25+" },
   },
   {
-    id: 8,
+    id: 10,
     title: "Cubicle",
     description:
       "Cubicle is a SaaS based tool that help to manage daily office work in just one click.",
@@ -218,7 +265,7 @@ export const projects = [
     stats: { commits: "20+", features: "10+" },
   },
   {
-    id: 9,
+    id: 11,
     title: "Azon Hub",
     description:
       "A full-stack e-commerce application with product catalog, cart management, user authentication, order processing, and admin product management.",
@@ -233,7 +280,7 @@ export const projects = [
     stats: { commits: "70+", features: "18+" },
   },
   {
-    id: 10,
+    id: 12,
     title: "Pixteria",
     description:
       "Pixteria is a social media platform with real-time messaging, user authentication, image/video sharing, and profile management.",
