@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 export const metadata: Metadata = {
   title: "Jayant Verma — Full Stack Developer | Next.js, Node.js, AI",
   description:
-    "Portfolio of Jayant Verma, a Full Stack Developer with 1.5+ years of experience specializing in Next.js, React.js, Node.js, and AI integration. Building scalable, high-performance web applications.",
+    "Portfolio of Jayant Verma, a Full Stack Developer with 2 years of experience specializing in Next.js, React.js, Node.js, and AI integration. Building scalable, high-performance web applications.",
   keywords: [
     "Jayant Verma",
     "Full Stack Developer",

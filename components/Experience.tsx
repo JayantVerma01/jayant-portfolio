@@ -23,7 +23,7 @@ export default function Experience() {
             <span className="gradient-text">Journey</span>
           </h2>
           <p className="section-subtitle">
-            1.5+ years of hands-on experience building production-grade applications.
+            2 years of hands-on experience building production-grade applications.
           </p>
         </motion.div>
 

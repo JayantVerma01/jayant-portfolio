@@ -77,7 +77,7 @@ export default function About() {
                 {[
                   { label: "Email", value: "vermajayant03@gmail.com" },
                   { label: "Phone No.", value: "+91 9588965801" },
-                  { label: "Experience", value: "1.5+ Years" },
+                  { label: "Experience", value: "2 Years" },
                   { label: "Status", value: "Open to Work ✅" },
                 ].map((m) => (
                   <div key={m.label} className={styles.metaItem}>
