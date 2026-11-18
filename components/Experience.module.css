@@ -10,7 +10,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-text);
   margin-bottom: 14px;
 }
 .title {
@@ -23,7 +23,7 @@
 .title em,
 .processTitle em {
   font-style: italic;
-  color: var(--signal);
+  color: var(--signal-text);
 }
 
 /* Timeline */
@@ -106,7 +106,7 @@
 }
 .company {
   margin-top: 6px;
-  color: var(--signal);
+  color: var(--signal-text);
   font-weight: 500;
 }
 .desc {
@@ -231,7 +231,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-text);
 }
 .stepTitle {
   font-family: var(--font-display), serif;

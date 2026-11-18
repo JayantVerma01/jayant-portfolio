@@ -22,7 +22,7 @@
   color: var(--paper-dim);
 }
 .top span:last-child {
-  color: var(--signal);
+  color: var(--signal-text);
   font-variant-numeric: tabular-nums;
 }
 
@@ -39,7 +39,7 @@
 }
 .name em {
   font-style: italic;
-  color: var(--signal);
+  color: var(--signal-text);
 }
 .role {
   margin-top: 1rem;

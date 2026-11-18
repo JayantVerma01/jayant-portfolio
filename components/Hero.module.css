@@ -84,7 +84,7 @@
 .role {
   display: inline-block;
   min-width: 1px;
-  color: var(--signal);
+  color: var(--signal-text);
 }
 .role em {
   display: inline-block;
@@ -194,7 +194,7 @@
   color: var(--paper-faint);
 }
 .wNow {
-  color: var(--signal);
+  color: var(--signal-text);
   font-weight: 600;
 }
 .wDone {

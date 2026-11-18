@@ -19,7 +19,7 @@ export default function Home() {
       <Cursor />
       <Navbar />
       <DotNav />
-      <main>
+      <main id="main">
         <Hero />
         <About />
         <Skills />

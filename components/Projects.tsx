@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Code2 } from "lucide-react";
@@ -100,6 +100,24 @@ function Detail({ p }: { p: Project }) {
 
 export default function Projects() {
   const rich = useRich3D();
+  const sectionRef = useRef<HTMLElement>(null);
+  // Only fetch the 3D bundle once the section is near the viewport.
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "800px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   const [mode, setMode] = useState<Mode>("featured");
   const [active, setActive] = useState(0);
   const [category, setCategory] = useState("All");
@@ -113,7 +131,7 @@ export default function Projects() {
   const current = featured[active];
 
   return (
-    <section id="projects" className={`section ${styles.projects}`}>
+    <section id="projects" ref={sectionRef} className={`section ${styles.projects}`}>
       <div className="container">
         <div className={styles.head}>
           <div>
@@ -142,7 +160,9 @@ export default function Projects() {
           <>
             {rich === true && (
               <div className={styles.stage}>
-                <Gallery3D list={featured} active={active} onChange={setActive} />
+                {near && (
+                  <Gallery3D list={featured} active={active} onChange={setActive} />
+                )}
                 <p className={styles.hint} aria-hidden="true">
                   drag · click a card · ← →
                 </p>

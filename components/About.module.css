@@ -20,7 +20,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-text);
 }
 .title {
   font-family: var(--font-display), Georgia, serif;
@@ -31,7 +31,7 @@
 }
 .title em {
   font-style: italic;
-  color: var(--signal);
+  color: var(--signal-text);
 }
 .bio {
   max-width: 54ch;
@@ -152,7 +152,7 @@
   transition: color var(--transition-base);
 }
 .track:hover .no {
-  color: var(--signal);
+  color: var(--signal-text);
 }
 .when {
   font-family: var(--font-mono), monospace;
@@ -218,7 +218,7 @@
   height: 52px;
   border-radius: 16px;
   background: var(--signal-soft);
-  color: var(--signal);
+  color: var(--signal-text);
 }
 .beyondBody {
   flex: 1;
@@ -240,7 +240,7 @@
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-text);
 }
 .beyondArrow {
   flex: none;
@@ -249,7 +249,7 @@
 }
 .beyond:hover .beyondArrow {
   transform: translate(3px, -3px);
-  color: var(--signal);
+  color: var(--signal-text);
 }
 
 @media (max-width: 960px) {
