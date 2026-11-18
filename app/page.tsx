@@ -1,4 +1,6 @@
 import Loader from "@/components/Loader";
+import { IntroAudioProvider } from "@/components/IntroAudio";
+import MiniPlayer from "@/components/MiniPlayer";
 import Cursor from "@/components/Cursor";
 import DotNav from "@/components/DotNav";
 import Navbar from "@/components/Navbar";
@@ -12,7 +14,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <IntroAudioProvider>
       <Loader />
       <Cursor />
       <Navbar />
@@ -26,6 +28,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-    </>
+      <MiniPlayer />
+    </IntroAudioProvider>
   );
 }

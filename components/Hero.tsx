@@ -1,256 +1,216 @@
 "use client";
 
-import { useRef } from "react";
-import { motion } from "framer-motion";
-import { TypeAnimation } from "react-type-animation";
-import { ArrowDown, Download, Mail } from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { personalInfo } from "@/lib/data";
+import { useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowDown, Download, Pause, Play, RotateCcw } from "lucide-react";
+import { kpis, personalInfo } from "@/lib/data";
+import { useIntroAudio } from "./IntroAudio";
+import CountUp from "./CountUp";
+import BadgeFace from "./hero/BadgeFace";
 import styles from "./Hero.module.css";
 
-const TECH_ICONS = [
-  { icon: "⚛️", label: "React", x: -60, y: -40, delay: 0 },
-  { icon: "▲", label: "Next.js", x: 60, y: -50, delay: 0.5 },
-  { icon: "🟩", label: "Node.js", x: -80, y: 40, delay: 1 },
-  { icon: "🤖", label: "AI", x: 80, y: 50, delay: 1.5 },
-  { icon: "🔷", label: "TypeScript", x: -40, y: 80, delay: 2 },
-  { icon: "💎", label: "MongoDB", x: 50, y: 80, delay: 0.8 },
+const Lanyard = dynamic(() => import("./hero/Lanyard"), { ssr: false });
+
+/** Chips that light up when the matching phrase is spoken in the intro. */
+const CUES = [
+  { label: "HG Infra", match: "HG Infra" },
+  { label: "E-commerce", match: "e-commerce" },
+  { label: "RAG", match: "RAG" },
+  { label: "LangGraph", match: "LangGraph" },
+  { label: "SAP", match: "SAP" },
+  { label: "Razorpay", match: "Razorpay" },
 ];
 
-const SOCIAL = [
-  { href: personalInfo.github, icon: <FaGithub size={18} />, label: "GitHub" },
-  { href: personalInfo.linkedin, icon: <FaLinkedin size={18} />, label: "LinkedIn" },
-  { href: `mailto:${personalInfo.email}`, icon: <Mail size={18} />, label: "Email" },
-];
+function supportsRichBadge() {
+  if (typeof window === "undefined") return false;
+  const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const wide = window.matchMedia("(min-width: 960px)").matches;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!fine || !wide || reduced) return false;
+  try {
+    const c = document.createElement("canvas");
+    return !!(c.getContext("webgl2") || c.getContext("webgl"));
+  } catch {
+    return false;
+  }
+}
 
 export default function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const audio = useIntroAudio();
+  const [rich, setRich] = useState<boolean | null>(null);
+  const [roleIdx, setRoleIdx] = useState(0);
 
-  const scrollToAbout = () => {
-    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
-  };
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setRich(supportsRichBadge()));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  useEffect(() => {
+    const t = setInterval(
+      () => setRoleIdx((i) => (i + 1) % personalInfo.taglines.length),
+      2600,
+    );
+    return () => clearInterval(t);
+  }, []);
+
+  const playing = audio.status === "playing";
+  const started = audio.status !== "idle";
+
+  const spoken = useMemo(
+    () => audio.words.slice(0, Math.max(audio.wordIndex + 1, 0)).join(" "),
+    [audio.words, audio.wordIndex],
+  );
+  const lit = (m: string) =>
+    audio.status === "ended" || spoken.toLowerCase().includes(m.toLowerCase());
+
+  const currentSentence =
+    audio.sentences.find((s) => audio.wordIndex >= s.firstWord && audio.wordIndex <= s.lastWord) ??
+    audio.sentences[audio.status === "ended" ? audio.sentences.length - 1 : 0];
+
+  const [first, last] = personalInfo.name.split(" ");
 
   return (
-    <section id="home" className={styles.hero} ref={containerRef}>
-      {/* Animated background blobs */}
-      <div className={styles.blobs} aria-hidden="true">
-        <motion.div
-          className={`${styles.blob} ${styles.blob1}`}
-          animate={{
-            scale: [1, 1.2, 0.9, 1],
-            rotate: [0, 90, 180, 270, 360],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div
-          className={`${styles.blob} ${styles.blob2}`}
-          animate={{
-            scale: [1.1, 0.9, 1.2, 1.1],
-            rotate: [360, 270, 180, 90, 0],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div
-          className={`${styles.blob} ${styles.blob3}`}
-          animate={{
-            scale: [0.9, 1.1, 1, 0.9],
-            x: [0, 30, -20, 0],
-            y: [0, -20, 30, 0],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
+    <section id="home" className={styles.hero}>
+      <div className={styles.glow} aria-hidden="true" />
 
-      {/* Grid overlay */}
-      <div className={styles.grid} aria-hidden="true" />
+      <h1 className={styles.giant} aria-label={personalInfo.name}>
+        <span aria-hidden="true">
+          {first} <em>{last}</em>
+        </span>
+      </h1>
 
-      <div className={styles.content}>
-        {/* Status badge */}
-        <motion.div
-          className={styles.statusBadge}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-        >
-          <span className={styles.statusDot} />
-          <span>Available for opportunities</span>
-        </motion.div>
+      <div className={`container ${styles.grid}`}>
+        <div className={styles.copy}>
+          <p className={styles.eyebrow}>
+            <span className={styles.live} /> Portfolio / 2026
+          </p>
 
-        {/* Main heading */}
-        <motion.h1
-          className={styles.heading}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span className={styles.wave}>👋</span>
-          <br />
-          Hi, I&apos;m{" "}
-          <span className="gradient-text">Jayant Verma</span>
-        </motion.h1>
+          <p className={styles.lead}>
+            Hello, I&apos;m {first}, a{" "}
+            <span className={styles.role} aria-live="polite">
+              <AnimatePresence mode="wait">
+                <motion.em
+                  key={roleIdx}
+                  initial={{ y: 18, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -18, opacity: 0 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  {personalInfo.taglines[roleIdx]}
+                </motion.em>
+              </AnimatePresence>
+            </span>{" "}
+            from {personalInfo.location.split(",")[0]}.
+          </p>
 
-        {/* Type animation */}
-        <motion.div
-          className={styles.typeWrapper}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-        >
-          <span className={styles.typePrefix}>I build </span>
-          <span className={styles.typeText}>
-            <TypeAnimation
-              sequence={[
-                "Full Stack Applications",
-                2000,
-                "Next.js Experiences",
-                2000,
-                "Node.js APIs",
-                2000,
-                "AI-Powered Solutions",
-                2000,
-                "Scalable Systems",
-                2000,
-              ]}
-              wrapper="span"
-              speed={40}
-              deletionSpeed={60}
-              repeat={Infinity}
-            />
-            <span className={styles.cursor}>|</span>
-          </span>
-        </motion.div>
+          <p className={styles.sub}>
+            I build production web apps and AI features end to end: APIs, data,
+            integrations and the interface on top.
+          </p>
 
-        {/* Bio */}
-        <motion.p
-          className={styles.bio}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65, duration: 0.8 }}
-        >
-          AI Full Stack Developer with{" "}
-          <strong style={{ color: "var(--accent-primary)" }}>2+ years</strong>{" "}
-          of experience building scalable web applications and AI-powered solutions. I build seamless web experiences with React.js and Next.js, and robust backend APIs with Node.js. I love exploring the intersection of web development and AI to create intelligent, user-centric products.
-        </motion.p>
-
-        {/* CTA buttons */}
-        <motion.div
-          className={styles.ctas}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-        >
-          <motion.button
-            className="btn btn-primary"
-            onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            View My Work
-            <ArrowDown size={16} />
-          </motion.button>
-          <motion.a
-            href={personalInfo.resume}
-            download="JAYANT VERMA RESUME.pdf"
-            className="btn btn-outline"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Download size={16} />
-            Download CV
-          </motion.a>
-        </motion.div>
-
-        {/* Socials */}
-        <motion.div
-          className={styles.socials}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
-        >
-          {SOCIAL.map((s, i) => (
-            <motion.a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.socialBtn}
-              aria-label={s.label}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1 + i * 0.1, type: "spring" }}
-              whileHover={{ scale: 1.2, y: -4 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              {s.icon}
-            </motion.a>
-          ))}
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          className={styles.stats}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-        >
-          {[
-            { num: personalInfo.experienceYears, label: "Years Experience" },
-            { num: personalInfo.projectsCount, label: "Projects Shipped" },
-            { num: personalInfo.technologiesCount, label: "Technologies" },
-          ].map((s, i) => (
-            <div key={i} className={styles.stat}>
-              <span className={styles.statNum}>{s.num}</span>
-              <span className={styles.statLabel}>{s.label}</span>
+          {/* Intro player + live captions */}
+          <div className={`${styles.player} ${playing ? styles.playingState : ""}`}>
+            <div className={styles.controls}>
+              <button
+                className={styles.playBtn}
+                onClick={audio.toggle}
+                aria-label={playing ? "Pause introduction" : "Play introduction"}
+                data-cursor={playing ? "Pause" : "Play"}
+              >
+                {playing ? <Pause size={18} /> : <Play size={18} />}
+              </button>
+              <div className={styles.wave} aria-hidden="true">
+                {Array.from({ length: 28 }, (_, i) => (
+                  <i key={i} style={{ animationDelay: `${(i % 7) * 0.09}s` }} />
+                ))}
+              </div>
+              <span className={styles.timeLabel}>
+                {started ? `${Math.round(audio.progress * 100)}%` : "~35 sec"}
+              </span>
+              {started && (
+                <button
+                  className={styles.ghostBtn}
+                  onClick={audio.restart}
+                  aria-label="Restart introduction"
+                >
+                  <RotateCcw size={15} />
+                </button>
+              )}
             </div>
-          ))}
-        </motion.div>
-      </div>
 
-      {/* Floating tech icons */}
-      <div className={styles.floatingIcons} aria-hidden="true">
-        {TECH_ICONS.map((t, i) => (
-          <motion.div
-            key={t.label}
-            className={styles.floatIcon}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.5 + t.delay * 0.3, type: "spring", bounce: 0.4 }}
-            style={{ x: t.x * 3, y: t.y * 2 } as import("framer-motion").MotionStyle}
-          >
-            <motion.div
-              animate={{ y: [0, -12, 0], rotate: [-3, 3, -3] }}
-              transition={{
-                duration: 3 + i * 0.5,
-                repeat: Infinity,
-                delay: t.delay,
-                ease: "easeInOut",
-              }}
-              className={styles.floatIconInner}
-              title={t.label}
-            >
-              {t.icon}
-            </motion.div>
-          </motion.div>
-        ))}
-      </div>
+            <p className={styles.caption} aria-live="off">
+              {started ? (
+                currentSentence.text.split(" ").map((w, i) => {
+                  const gi = currentSentence.firstWord + i;
+                  const cls =
+                    gi === audio.wordIndex
+                      ? styles.wNow
+                      : gi < audio.wordIndex || audio.status === "ended"
+                        ? styles.wDone
+                        : styles.wNext;
+                  return (
+                    <span key={gi} className={cls}>
+                      {w}{" "}
+                    </span>
+                  );
+                })
+              ) : (
+                <span className={styles.hint}>
+                  Press play and hear me introduce myself.
+                </span>
+              )}
+            </p>
 
-      {/* Scroll indicator */}
-      {/* <motion.button
-        className={styles.scrollIndicator}
-        onClick={scrollToAbout}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        whileHover={{ scale: 1.1 }}
-        aria-label="Scroll to about"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ArrowDown size={20} />
-        </motion.div>
-      </motion.button> */}
+            <ul className={styles.cues} aria-label="Topics mentioned in the intro">
+              {CUES.map((c) => (
+                <li key={c.label} className={lit(c.match) ? styles.cueOn : ""}>
+                  {c.label}
+                </li>
+              ))}
+            </ul>
+
+            {audio.usingBrowserVoice && (
+              <p className={styles.note}>Preview voice. My own recording is coming.</p>
+            )}
+          </div>
+
+          <div className={styles.ctas}>
+            <a className={styles.cta} href="#projects">
+              See my work <ArrowDown size={16} />
+            </a>
+            <a className={styles.ctaGhost} href={personalInfo.resume} download>
+              <Download size={16} /> Résumé
+            </a>
+          </div>
+
+          <ul className={styles.kpis}>
+            {kpis.map((k) => (
+              <li key={k.label}>
+                <strong>
+                  <CountUp value={k.value} suffix={k.suffix} />
+                </strong>
+                <span>{k.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Badge */}
+        <div className={styles.badgeWrap}>
+          {rich === true && <Lanyard playing={playing} onTap={audio.toggle} />}
+          {rich === false && (
+            <div className={styles.staticBadge}>
+              <BadgeFace playing={playing} onPlay={audio.toggle} />
+            </div>
+          )}
+          {rich === true && (
+            <p className={styles.dragHint} aria-hidden="true">
+              drag me · click to play
+            </p>
+          )}
+        </div>
+      </div>
     </section>
   );
 }

@@ -16,6 +16,8 @@ export const personalInfo = {
   linkedin: "https://linkedin.com/in/jayantverma1",
   resume: "/JAYANT VERMA RESUME.pdf",
   role: "Full Stack & AI Engineer",
+  /** Badge photo (square). Empty = monogram. Drop a file in /public and set e.g. "/jayant.jpg". */
+  photo: "",
   availability: { open: true, label: "Open to work" },
   experienceYears: "2+",
   projectsCount: "10+",
