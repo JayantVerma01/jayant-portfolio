@@ -11,7 +11,7 @@ export const personalInfo = {
   ],
   bio: "I'm a passionate Full Stack Developer with 2 years of experience building scalable web applications and AI-powered solutions. I specialize in crafting seamless user experiences with React.js and Next.js on the frontend, while architecting robust APIs and microservices with Node.js on the backend. I love exploring the intersection of web development and AI to create intelligent, user-centric products.",
   location: "Jaipur, Rajasthan, India",
-  email: "vermajayant03@email.com",
+  email: "vermajayant03@gmail.com",
   github: "https://github.com/JayantVerma01",
   linkedin: "https://linkedin.com/in/jayantverma1",
   resume: "/JAYANT VERMA RESUME.pdf",
@@ -397,4 +397,53 @@ export const process = [
   { step: "Then", title: "Design the system", body: "APIs, data model and integrations sketched first, so the build stays simple.", outputs: ["Schema", "API contract", "Architecture"] },
   { step: "Next", title: "Build to last", body: "Typed, tested, role-secured code with clear boundaries.", outputs: ["Frontend", "Backend", "AI pipeline"] },
   { step: "Finally", title: "Ship and refine", body: "CI/CD, monitoring and iteration after launch.", outputs: ["Deploy", "Monitoring", "Iteration"] },
+];
+
+/**
+ * About-section story. Built only from facts already in this file.
+ * Add personal details (origin, hobbies, languages) here when you want them shown.
+ */
+export const story = [
+  {
+    no: "01",
+    when: "2023",
+    title: "Started in web development",
+    body: "Began building for the web and quickly found the part I enjoy most: making the thing behind the screen work reliably.",
+    tags: ["JavaScript", "React.js"],
+  },
+  {
+    no: "02",
+    when: "Jul – Dec 2024",
+    title: "First production APIs",
+    body: "Backend intern at Fixl Solutions. Built 15+ REST endpoints, JWT auth, payment and email integrations, and cut API response times by 30% through query optimization.",
+    tags: ["Node.js", "Express.js", "MongoDB", "JWT"],
+  },
+  {
+    no: "03",
+    when: "Apr – Jul 2025",
+    title: "Growing into full stack",
+    body: "Backend trainee at Hornet Dynamics, working across Node.js, Express and MySQL, and starting to own features from database to interface.",
+    tags: ["Node.js", "MySQL", "Redux"],
+  },
+  {
+    no: "04",
+    when: "Aug 2025 – now",
+    title: "Enterprise software",
+    body: "Full Stack Developer at HG Infra Engineering. Building EPC and construction workflow software: role-based access, SAP integration and dashboards used on real sites.",
+    tags: ["Next.js", "RBAC", "SAP", "AWS S3"],
+  },
+  {
+    no: "05",
+    when: "Alongside",
+    title: "AI that ships",
+    body: "Building RAG search and agent pipelines, from Trade-Analyser AI to a document query system, with LangChain, LangGraph and vector databases.",
+    tags: ["RAG", "LangGraph", "OpenAI", "Chroma"],
+  },
+];
+
+export const facts = [
+  { label: "Based in", value: "Jaipur, India" },
+  { label: "Experience", value: "2+ years" },
+  { label: "Looking for", value: "Full-time & freelance" },
+  { label: "Core stack", value: "Next.js · Node.js · Python" },
 ];
