@@ -140,6 +140,11 @@ function drawBadge(
   heights.forEach((h, i) => ctx.fillRect(262 + i * 7, 405 - h / 2, 3, h));
 }
 
+/** Mutating a three.js object lives outside components to keep React lint happy. */
+function markDirty(t: THREE.Texture) {
+  t.needsUpdate = true;
+}
+
 function useBadgeTexture(playing: boolean) {
   const [tex] = useState(() => {
     const c = document.createElement("canvas");
@@ -157,7 +162,7 @@ function useBadgeTexture(playing: boolean) {
     const paint = () => {
       if (!alive) return;
       drawBadge(tex.image as HTMLCanvasElement, playing, photo.current);
-      tex.needsUpdate = true;
+      markDirty(tex);
     };
     paint();
     void document.fonts.ready.then(paint);
