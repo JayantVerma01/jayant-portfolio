@@ -7,18 +7,20 @@ type Theme = "dark" | "light";
 const ThemeContext = createContext<{
   theme: Theme;
   toggleTheme: () => void;
-}>({ theme: "dark", toggleTheme: () => {} });
+}>({ theme: "light", toggleTheme: () => {} });
 
 /** Runs before first paint (inlined in <head>) so there is no theme flash. */
-export const themeInitScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.setAttribute('data-theme','dark')}})()`;
+export const THEME_KEY = "jv-theme";
+
+export const themeInitScript = `(function(){var t='light';try{var s=localStorage.getItem('${THEME_KEY}');if(s==='dark'||s==='light')t=s}catch(e){}document.documentElement.setAttribute('data-theme',t)})()`;
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     const current = document.documentElement.getAttribute("data-theme");
     // Sync React state with the attribute set by the init script.
-    const id = setTimeout(() => setTheme(current === "light" ? "light" : "dark"), 0);
+    const id = setTimeout(() => setTheme(current === "dark" ? "dark" : "light"), 0);
     return () => clearTimeout(id);
   }, []);
 
@@ -26,7 +28,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme((prev) => {
       const next: Theme = prev === "dark" ? "light" : "dark";
       try {
-        localStorage.setItem("theme", next);
+        localStorage.setItem(THEME_KEY, next);
       } catch {}
       document.documentElement.setAttribute("data-theme", next);
       return next;

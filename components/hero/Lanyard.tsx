@@ -14,6 +14,7 @@ import {
   type RapierRigidBody,
 } from "@react-three/rapier";
 import { personalInfo } from "@/lib/data";
+import { useInView } from "@/hooks/useInView";
 
 const CARD_W = 1.6;
 const CARD_H = 2.25;
@@ -372,18 +373,23 @@ export default function Lanyard({
   playing: boolean;
   onTap: () => void;
 }) {
+  // Stop rendering and physics while the hero is scrolled out of view.
+  const [ref, inView] = useInView<HTMLDivElement>("50px");
   return (
-    <Canvas
-      camera={{ position: [0, 0, 11], fov: 25 }}
-      dpr={[1, 2]}
-      gl={{ alpha: true, antialias: true }}
-      style={{ background: "transparent" }}
-    >
-      <ambientLight intensity={1.4} />
-      <directionalLight position={[3, 5, 6]} intensity={2.2} />
-      <Physics gravity={[0, -40, 0]} timeStep={1 / 60}>
-        <Band playing={playing} onTap={onTap} />
-      </Physics>
-    </Canvas>
+    <div ref={ref} style={{ width: "100%", height: "100%" }}>
+      <Canvas
+        camera={{ position: [0, 0, 11], fov: 25 }}
+        dpr={[1, 1.75]}
+        frameloop={inView ? "always" : "never"}
+        gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
+        style={{ background: "transparent" }}
+      >
+        <ambientLight intensity={1.4} />
+        <directionalLight position={[3, 5, 6]} intensity={2.2} />
+        <Physics gravity={[0, -40, 0]} timeStep="vary" paused={!inView}>
+          <Band playing={playing} onTap={onTap} />
+        </Physics>
+      </Canvas>
+    </div>
   );
 }

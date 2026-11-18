@@ -3,6 +3,7 @@
 import * as THREE from "three";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { useInView } from "@/hooks/useInView";
 import { COVER_H, COVER_W, drawCover, type Project } from "./cover";
 
 const CARD_W = 3.6;
@@ -141,11 +142,13 @@ export default function Gallery3D({
   const drag = useRef(0);
   const start = useRef<{ x: number; w: number } | null>(null);
   const [grabbing, setGrabbing] = useState(false);
+  const [viewRef, inView] = useInView<HTMLDivElement>("80px");
 
   const clamp = (i: number) => Math.max(0, Math.min(list.length - 1, i));
 
   return (
     <div
+      ref={viewRef}
       role="group"
       aria-roledescription="carousel"
       aria-label="Featured projects"
@@ -182,7 +185,8 @@ export default function Gallery3D({
     >
       <Canvas
         camera={{ position: [0, 0.3, 1.5], fov: 38 }}
-        dpr={[1, 2]}
+        dpr={[1, 1.75]}
+        frameloop={inView ? "always" : "never"}
         gl={{ alpha: true, antialias: true }}
         style={{ background: "transparent" }}
       >

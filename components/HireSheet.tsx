@@ -38,6 +38,7 @@ export default function HireSheet({
     <dialog
       ref={ref}
       className={styles.sheet}
+      data-lenis-prevent
       aria-labelledby="hire-title"
       onClose={onClose}
       onClick={(e) => {
