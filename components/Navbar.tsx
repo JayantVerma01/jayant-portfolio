@@ -1,162 +1,133 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
-import { navLinks } from "@/lib/data";
+import HireSheet from "./HireSheet";
+import { useActiveSection } from "@/hooks/useActiveSection";
+import { navLinks, personalInfo } from "@/lib/data";
 import styles from "./Navbar.module.css";
+
+const ids = navLinks.map((l) => l.href.slice(1));
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hireOpen, setHireOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const active = useActiveSection(ids);
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-
-      const sections = navLinks.map((l) => l.href.slice(1));
-      for (const id of [...sections].reverse()) {
-        const el = document.getElementById(id);
-        if (el && window.scrollY >= el.offsetTop - 100) {
-          setActiveSection(id);
-          break;
-        }
-      }
-    };
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNav = (href: string) => {
-    setMobileOpen(false);
-    const id = href.slice(1);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobileOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
 
   return (
     <>
-      <motion.nav
-        className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}
-        initial={{ y: -80, opacity: 0 }}
+      <motion.header
+        className={`${styles.wrap} ${scrolled ? styles.scrolled : ""}`}
+        initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className={styles.inner}>
-          {/* Logo */}
-          <motion.a
-            href="#home"
-            className={styles.logo}
-            onClick={(e) => { e.preventDefault(); handleNav("#home"); }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span className={styles.logoIcon}>JV</span>
-            <span className={styles.logoText}>Jayant Verma</span>
-          </motion.a>
+        <nav className={styles.pill} aria-label="Primary">
+          <a href="#home" className={styles.logo} aria-label="Jayant Verma — home">
+            <span className={styles.mark}>JV</span>
+          </a>
 
-          {/* Desktop links */}
           <ul className={styles.links}>
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <button
-                  className={`${styles.link} ${activeSection === link.href.slice(1) ? styles.active : ""}`}
-                  onClick={() => handleNav(link.href)}
-                >
-                  {link.label}
-                  {activeSection === link.href.slice(1) && (
-                    <motion.span
-                      className={styles.linkDot}
-                      layoutId="nav-dot"
-                      transition={{ type: "spring", bounce: 0.25 }}
-                    />
-                  )}
-                </button>
-              </li>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = active === link.href.slice(1);
+              return (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className={`${styles.link} ${isActive ? styles.active : ""}`}
+                    aria-current={isActive ? "true" : undefined}
+                  >
+                    {isActive && (
+                      <motion.span
+                        className={styles.activePill}
+                        layoutId="nav-active"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                      />
+                    )}
+                    <span className={styles.linkLabel}>{link.label}</span>
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
-          {/* Right actions */}
           <div className={styles.actions}>
-            {/* Theme toggle */}
-            <motion.button
-              className={styles.themeBtn}
+            {personalInfo.availability.open && (
+              <span className={styles.status}>
+                <span className={styles.statusDot} aria-hidden="true" />
+                {personalInfo.availability.label}
+              </span>
+            )}
+
+            <button
+              className={styles.iconBtn}
               onClick={toggleTheme}
-              whileHover={{ scale: 1.1, rotate: 15 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label="Toggle theme"
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
             >
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={theme}
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ display: "flex" }}
-                >
-                  {theme === "dark" ? "☀️" : "🌙"}
-                </motion.span>
-              </AnimatePresence>
-            </motion.button>
+              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
 
-            {/* Hire me */}
-            <motion.a
-              href="#contact"
-              className={`btn btn-primary ${styles.hireBtn}`}
-              onClick={(e) => { e.preventDefault(); handleNav("#contact"); }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Hire Me
-            </motion.a>
+            <button className={styles.hire} onClick={() => setHireOpen(true)}>
+              Hire me
+            </button>
 
-            {/* Mobile hamburger */}
-            <motion.button
-              className={styles.hamburger}
-              onClick={() => setMobileOpen(!mobileOpen)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label="Open menu"
+            <button
+              className={`${styles.iconBtn} ${styles.burger}`}
+              onClick={() => setMobileOpen((o) => !o)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
             >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-            </motion.button>
+              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
           </div>
-        </div>
-      </motion.nav>
+        </nav>
+      </motion.header>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className={styles.mobileMenu}
-            initial={{ opacity: 0, y: -20 }}
+            className={styles.mobile}
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25 }}
           >
-            <ul className={styles.mobileLinks}>
-              {navLinks.map((link, i) => (
-                <motion.li
-                  key={link.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <button
-                    className={`${styles.mobileLink} ${activeSection === link.href.slice(1) ? styles.mobileActive : ""}`}
-                    onClick={() => handleNav(link.href)}
+            <ul>
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className={`${styles.mobileLink} ${active === link.href.slice(1) ? styles.mobileActive : ""}`}
+                    onClick={() => setMobileOpen(false)}
                   >
                     {link.label}
-                  </button>
-                </motion.li>
+                  </a>
+                </li>
               ))}
             </ul>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <HireSheet open={hireOpen} onClose={() => setHireOpen(false)} />
     </>
   );
 }

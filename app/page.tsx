@@ -1,3 +1,6 @@
+import Loader from "@/components/Loader";
+import Cursor from "@/components/Cursor";
+import DotNav from "@/components/DotNav";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -9,15 +12,20 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main>
+    <>
+      <Loader />
+      <Cursor />
       <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Contact />
+      <DotNav />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Contact />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

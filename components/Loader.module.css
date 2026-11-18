@@ -1,0 +1,61 @@
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--gutter);
+  background: var(--ink-0);
+  color: var(--paper);
+  cursor: pointer;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--fs-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.top,
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  color: var(--paper-dim);
+}
+.top span:last-child {
+  color: var(--signal);
+  font-variant-numeric: tabular-nums;
+}
+
+.center {
+  text-align: center;
+}
+.name {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3rem, 1rem + 9vw, 8rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--paper);
+}
+.name em {
+  font-style: italic;
+  color: var(--signal);
+}
+.role {
+  margin-top: 1rem;
+  color: var(--paper-dim);
+}
+
+.skip {
+  opacity: 0.6;
+}
+
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+  transform-origin: left;
+}

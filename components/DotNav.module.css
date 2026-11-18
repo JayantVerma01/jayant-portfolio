@@ -1,0 +1,67 @@
+.dots {
+  position: fixed;
+  right: clamp(12px, 2vw, 28px);
+  top: 50%;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transform: translateY(-50%);
+}
+
+.dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  text-decoration: none;
+}
+.dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--paper-faint);
+  transition:
+    transform var(--transition-base),
+    background var(--transition-base);
+}
+.dot:hover::before {
+  background: var(--paper);
+}
+.on::before {
+  background: var(--signal);
+  transform: scale(1.8);
+}
+
+.label {
+  position: absolute;
+  right: 28px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--ink-3);
+  color: var(--paper);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(6px);
+  pointer-events: none;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+.dot:hover .label,
+.dot:focus-visible .label {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 1100px) {
+  .dots {
+    display: none;
+  }
+}

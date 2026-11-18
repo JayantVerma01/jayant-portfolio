@@ -1,0 +1,56 @@
+.ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3000;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+.ring[data-show="1"] {
+  opacity: 1;
+}
+
+.ring::before {
+  content: "";
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--signal);
+  border-radius: 50%;
+  display: block;
+  transition:
+    transform var(--transition-base),
+    background var(--transition-base);
+}
+.ring[data-state="link"]::before {
+  transform: scale(1.7);
+  background: var(--signal-soft);
+}
+.ring[data-state="label"]::before {
+  transform: scale(2.6);
+  background: var(--signal);
+}
+
+.label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .ring {
+    display: none;
+  }
+}
