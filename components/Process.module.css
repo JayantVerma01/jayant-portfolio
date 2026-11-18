@@ -1,0 +1,272 @@
+/* ── Process: the ship's wheel turns as you scroll ── */
+.scene {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  padding-top: calc(var(--nav-height) + 12px);
+  display: flex;
+  flex-direction: column;
+}
+.sticky::before {
+  /* faint chart paper */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(23, 21, 31, 0.09) 1px, transparent 1.4px);
+  background-size: 28px 28px;
+  opacity: 0.6;
+}
+.head {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2;
+}
+.tag {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--fs-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--signal-text);
+}
+.title {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2rem, 1rem + 3vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.title em {
+  font-style: italic;
+  color: var(--signal-text);
+}
+
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(20px, 4vw, 80px);
+}
+
+/* wheel */
+.helm {
+  display: grid;
+  place-items: center;
+}
+.wheelWrap {
+  position: relative;
+  width: min(50svh, 36vw, 440px);
+  aspect-ratio: 1;
+}
+.wheel {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.wheelWrap::after {
+  /* static soft shadow: a filter on the rotating wheel would repaint every frame */
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -6%;
+  height: 8%;
+  border-radius: 50%;
+  background: rgba(23, 21, 31, 0.18);
+  filter: blur(14px);
+  z-index: -1;
+}
+.wheelSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.handle {
+  position: absolute;
+  width: 7.2%;
+  height: 15%;
+  border: 3px solid #14110f;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #e6b56d, #c98f4a 55%, #a87035);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+}
+.needle {
+  position: absolute;
+  left: 50%;
+  top: -9%;
+  width: 0;
+  height: 0;
+  margin-left: -11px;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 22px solid var(--signal);
+  filter: drop-shadow(0 3px 0 #14110f);
+}
+.chip {
+  position: absolute;
+  padding: 4px 12px;
+  border: 2px solid #14110f;
+  border-radius: 999px;
+  background: #fffefb;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  transition:
+    background 0.3s,
+    color 0.3s,
+    transform 0.3s;
+}
+.chipOn {
+  background: var(--signal);
+  color: #fff;
+  transform: translate(-50%, -50%) scale(1.18);
+}
+.stand {
+  position: absolute;
+  left: -30%;
+  bottom: -2%;
+  width: 2px;
+  height: 2px;
+}
+
+/* step panel */
+.panelWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.panel {
+  position: relative;
+  flex: 1;
+  padding: clamp(22px, 2.4vw, 36px);
+  border: 3px solid #17151f;
+  border-radius: 24px;
+  background: #fffefb;
+  box-shadow: 9px 11px 0 rgba(23, 21, 31, 0.92);
+  overflow: hidden;
+}
+.bigNo {
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  font-family: var(--font-display), serif;
+  font-size: clamp(6rem, 3rem + 8vw, 11rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(91, 61, 240, 0.35);
+  user-select: none;
+}
+.icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 14px;
+  border: 3px solid #17151f;
+  border-radius: 16px;
+  background: var(--signal);
+  color: #fff;
+  box-shadow: 4px 5px 0 rgba(23, 21, 31, 0.9);
+}
+.kicker {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--signal-text);
+}
+.stepTitle {
+  margin-top: 6px;
+  font-family: var(--font-display), serif;
+  font-weight: 400;
+  font-size: clamp(1.8rem, 1rem + 2vw, 3rem);
+  line-height: 1.05;
+}
+.body {
+  margin-top: 12px;
+  max-width: 44ch;
+  color: var(--paper-dim);
+  line-height: 1.6;
+}
+.outs {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.outs li {
+  padding: 5px 14px;
+  border: 2px solid #17151f;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--signal) 12%, #fff);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.74rem;
+}
+
+.pins {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pin {
+  width: 42px;
+  height: 42px;
+  border: 2.5px solid #17151f;
+  border-radius: 50%;
+  background: #fffefb;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background 0.2s,
+    color 0.2s;
+}
+.pin:hover {
+  transform: scale(1.12) rotate(-6deg);
+}
+.pinOn {
+  background: var(--signal);
+  color: #fff;
+}
+
+/* fallback */
+.stackSection {
+  position: relative;
+}
+.stack {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
+  margin-top: 26px;
+}
+
+@media (max-width: 1100px) {
+  .stage {
+    grid-template-columns: 1fr;
+    align-content: center;
+  }
+  .wheelWrap {
+    width: min(30svh, 60vw);
+  }
+}

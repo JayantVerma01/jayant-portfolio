@@ -1,50 +1,16 @@
 .hero {
   position: relative;
+  overflow: clip;
   min-height: 100svh;
-  padding: calc(var(--nav-height) + 24px) 0 56px;
-  overflow: hidden;
+  padding: calc(var(--nav-height) + 16px) 0 40px;
   display: flex;
   align-items: center;
 }
 
-.glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(60% 50% at 78% 30%, var(--signal-soft), transparent 70%),
-    radial-gradient(40% 40% at 10% 90%, rgba(34, 211, 238, 0.08), transparent 70%);
-}
-
-/* Giant name behind everything */
-.giant {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.08em;
-  z-index: 0;
-  text-align: center;
-  font-family: var(--font-display), Georgia, serif;
-  font-weight: 400;
-  font-size: var(--fs-hero);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  white-space: nowrap;
-  color: color-mix(in srgb, var(--paper) 9%, transparent);
-  pointer-events: none;
-  user-select: none;
-}
-.giant em {
-  font-style: italic;
-  color: color-mix(in srgb, var(--signal) 28%, transparent);
-}
-
 .grid {
-  position: relative;
-  z-index: 1;
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 24px;
   align-items: center;
 }
@@ -52,17 +18,17 @@
 .copy {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 22px;
   max-width: 640px;
 }
 
 .eyebrow {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
   font-family: var(--font-mono), monospace;
   font-size: var(--fs-label);
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--paper-dim);
 }
@@ -74,16 +40,17 @@
   box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.2);
 }
 
-.lead {
+.title {
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(2.2rem, 1rem + 3.6vw, 4.4rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  font-size: clamp(2.8rem, 1rem + 5vw, 5.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
   color: var(--paper);
 }
 .role {
   display: block;
-  height: 1.1em; /* fixed so the rotating role never reflows the page */
+  height: 1.12em; /* fixed so the rotating role never reflows the page */
   overflow: hidden;
   color: var(--signal-text);
 }
@@ -93,105 +60,135 @@
 }
 
 .sub {
-  max-width: 52ch;
+  max-width: 44ch;
   color: var(--paper-dim);
   font-size: var(--fs-body);
   line-height: 1.6;
 }
 
-/* Player */
-.player {
+.actions {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--ink-2) 70%, transparent);
-  transition: border-color var(--transition-base);
-}
-.playingState {
-  border-color: var(--border-glow);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 
-.controls {
-  display: flex;
+.listen {
+  display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+  padding: 6px 18px 6px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--paper);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-base);
 }
-.playBtn {
-  flex: none;
+.listen:hover {
+  transform: translateY(-2px);
+}
+.listening {
+  border-color: var(--signal);
+}
+.listenIcon {
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
-  border: 0;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: var(--signal);
   color: #fff;
-  cursor: pointer;
+}
+.bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 16px;
+}
+.bars i {
+  width: 3px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--paper-faint);
+}
+.listening .bars i {
+  background: var(--signal);
+  animation: eq 0.9s ease-in-out infinite;
+}
+.listening .bars i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.listening .bars i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes eq {
+  50% {
+    height: 16px;
+  }
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: var(--radius-full);
+  background: var(--paper);
+  color: var(--ink-1);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
   transition: transform var(--transition-fast);
 }
-.playBtn:hover {
-  transform: scale(1.08);
+.cta:hover {
+  transform: translateY(-2px);
 }
-.ghostBtn {
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 4px;
+  color: var(--paper-dim);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.link:hover {
+  color: var(--paper);
+}
+.restart {
   display: grid;
   place-items: center;
   width: 34px;
   height: 34px;
+  border: 0;
   border-radius: 50%;
-  border: 1px solid var(--line);
   background: transparent;
   color: var(--paper-dim);
   cursor: pointer;
 }
-.ghostBtn:hover {
+.restart:hover {
   color: var(--paper);
   background: var(--bg-card-hover);
 }
 
-.wave {
-  flex: 1;
+/* Captions only appear once the intro starts */
+.captionWrap {
   display: flex;
-  align-items: center;
-  gap: 3px;
-  height: 32px;
-  min-width: 0;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 54ch;
 }
-.wave i {
-  flex: 1;
-  max-width: 5px;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--paper-faint);
-  transition: background var(--transition-base);
-}
-.playingState .wave i {
-  background: var(--signal);
-  animation: wave 0.9s ease-in-out infinite;
-}
-@keyframes wave {
-  50% {
-    height: 28px;
-  }
-}
-.timeLabel {
-  font-family: var(--font-mono), monospace;
-  font-size: var(--fs-label);
-  color: var(--paper-dim);
-  font-variant-numeric: tabular-nums;
-  min-width: 52px;
-  text-align: right;
-}
-
 .caption {
   min-height: 3.2em;
   font-size: 1.05rem;
   line-height: 1.55;
-}
-.hint {
-  color: var(--paper-faint);
 }
 .wNow {
   color: var(--signal-text);
@@ -203,7 +200,6 @@
 .wNext {
   color: var(--paper-faint);
 }
-
 .cues {
   list-style: none;
   display: flex;
@@ -224,89 +220,95 @@
   color: var(--paper) !important;
   border-color: var(--signal) !important;
   background: var(--signal-soft);
-  transform: translateY(-2px);
 }
 .note {
   font-size: 0.72rem;
   color: var(--paper-faint);
 }
 
-.ctas {
+/* Scroll scene: a tall section with a sticky stage inside. */
+.sticky {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.cta,
-.ctaGhost {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 13px 22px;
-  border-radius: var(--radius-full);
-  font-size: 0.95rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: transform var(--transition-fast);
-}
-.cta {
-  background: var(--paper);
-  color: var(--ink-1);
-}
-.ctaGhost {
-  border: 1px solid var(--line-strong);
-  color: var(--paper);
-}
-.cta:hover,
-.ctaGhost:hover {
-  transform: translateY(-2px);
-}
-
-.kpis {
-  list-style: none;
-  display: flex;
-  gap: clamp(20px, 4vw, 48px);
-  margin-top: 6px;
-}
-.kpis li {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.kpis strong {
-  font-family: var(--font-display), serif;
-  font-weight: 400;
-  font-size: clamp(1.8rem, 1.2rem + 1.5vw, 2.8rem);
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-.kpis span {
-  font-size: 0.75rem;
-  color: var(--paper-dim);
-}
-
-/* Badge area */
-.badgeWrap {
-  position: relative;
-  height: min(78svh, 720px);
-  min-height: 460px;
-  display: flex;
-  justify-content: center;
   align-items: center;
 }
-.badgeWrap canvas {
+.scene {
+  display: block;
+  height: 440svh;
+  padding: 0;
+}
+.scene .sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  padding-top: var(--nav-height);
+  overflow: hidden;
+}
+
+/* About lives inside the sticky scene, beneath the 3D stage */
+.aboutLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  padding-top: calc(var(--nav-height) + 8px);
+  padding-bottom: 24px;
+}
+.aboutLayer a,
+.aboutLayer figure {
+  pointer-events: auto;
+}
+
+/* Scroll anchors for the nav (the scene is one tall element) */
+.anchorHome,
+.anchorAbout {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  pointer-events: none;
+}
+.anchorHome {
+  top: 0;
+  height: calc(238svh + var(--nav-height));
+}
+.anchorAbout {
+  top: calc(238svh + var(--nav-height));
+  height: calc(202svh - var(--nav-height));
+}
+
+/* Full-bleed stage: the 3D card can swing across the whole hero. */
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: auto;
+}
+.stage canvas {
   touch-action: pan-y;
+}
+.grid {
+  position: relative;
+  z-index: 2;
+  pointer-events: none; /* let drags reach the card behind the copy */
+}
+.grid a,
+.grid button,
+.grid li,
+.grid p,
+.grid h1 {
+  pointer-events: auto;
 }
 .staticBadge {
   transform: rotate(-3deg);
-  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 20px 36px rgba(20, 16, 40, 0.22));
 }
 .dragHint {
   position: absolute;
-  bottom: 4%;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 24px;
+  right: 12%;
   font-family: var(--font-mono), monospace;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--paper-faint);
@@ -316,14 +318,6 @@
 @media (max-width: 959px) {
   .grid {
     grid-template-columns: 1fr;
-  }
-  .badgeWrap {
-    height: auto;
-    min-height: 0;
-    padding: 24px 0 72px;
-  }
-  .giant {
-    bottom: 0;
   }
 }
 @media (max-width: 480px) {

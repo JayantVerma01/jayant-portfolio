@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Code2 } from "lucide-react";
 import { projects } from "@/lib/data";
+import { perchOn } from "./hero/store";
 import { useRich3D } from "@/hooks/useRich3D";
 import type { Project } from "./projects/cover";
 import styles from "./Projects.module.css";
@@ -52,6 +53,8 @@ function Detail({ p }: { p: Project }) {
     <motion.article
       key={p.id}
       className={styles.detail}
+      data-luffy-perch=""
+      data-luffy-detail=""
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
@@ -130,18 +133,28 @@ export default function Projects() {
   const grid = category === "All" ? projects : projects.filter((p) => p.category === category);
   const current = featured[active];
 
+  // Luffy reads the newly selected project: hop onto its detail panel.
+  useEffect(() => {
+    if (mode !== "featured") return;
+    const t = window.setTimeout(
+      () => perchOn(document.querySelector("[data-luffy-detail]") as HTMLElement | null),
+      420,
+    );
+    return () => window.clearTimeout(t);
+  }, [active, mode]);
+
   return (
     <section id="projects" ref={sectionRef} className={`section ${styles.projects}`}>
       <div className="container">
         <div className={styles.head}>
           <div>
             <p className={styles.tag}>Selected work</p>
-            <h2 className={styles.title}>
+            <h2 className={styles.title} data-luffy="projects-title">
               Things I&apos;ve <em>shipped</em>.
             </h2>
           </div>
 
-          <div className={styles.toggle} role="tablist" aria-label="Project view">
+          <div className={styles.toggle} data-luffy-perch="" role="tablist" aria-label="Project view">
             {(["featured", "all"] as Mode[]).map((m) => (
               <button
                 key={m}
@@ -159,7 +172,7 @@ export default function Projects() {
         {mode === "featured" ? (
           <>
             {rich === true && (
-              <div className={styles.stage}>
+              <div className={styles.stage} data-luffy-perch="">
                 {near && (
                   <Gallery3D list={featured} active={active} onChange={setActive} />
                 )}
@@ -185,7 +198,7 @@ export default function Projects() {
               </div>
             )}
 
-            <div className={styles.nav}>
+            <div className={styles.nav} data-luffy-perch="">
               <button
                 onClick={() => setActive((a) => Math.max(0, a - 1))}
                 disabled={active === 0}
@@ -211,7 +224,7 @@ export default function Projects() {
           </>
         ) : (
           <>
-            <div className={styles.filters} role="group" aria-label="Filter by category">
+            <div className={styles.filters} data-luffy-perch="" role="group" aria-label="Filter by category">
               {categories.map((c) => (
                 <button
                   key={c}
@@ -239,6 +252,8 @@ export default function Projects() {
                       exit={{ opacity: 0, scale: 0.96 }}
                       transition={{ duration: 0.3 }}
                       className={styles.card}
+                      data-luffy-perch=""
+                      data-luffy-poke=""
                     >
                       <Cover p={p} i={i} total={grid.length} />
                       <p className={styles.cardText}>{p.description}</p>

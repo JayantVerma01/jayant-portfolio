@@ -20,7 +20,7 @@ export const personalInfo = {
   resume: "/JAYANT VERMA RESUME.pdf",
   role: "Full Stack & AI Engineer",
   /** Badge photo (square). Empty = monogram. Drop a file in /public and set e.g. "/jayant.jpg". */
-  photo: "",
+  photo: "/images/jayant-portrait.webp",
   availability: { open: true, label: "Open to work" },
   experienceYears: "2+",
   projectsCount: "10+",

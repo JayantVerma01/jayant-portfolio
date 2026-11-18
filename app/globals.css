@@ -118,7 +118,8 @@
 
   /* layout */
   --nav-height: 72px;
-  --section-padding: 120px;
+  --section-padding: 96px;
+  --gutter: clamp(12px, 1.4vw, 24px);
   --gutter: clamp(20px, 4vw, 56px);
 }
 
@@ -152,6 +153,10 @@ html.lenis, html.lenis body { height: auto; }
   outline-offset: 3px;
 }
 
+html {
+  position: relative; /* framer-motion measures scroll offsets against the root */
+}
+
 body {
   position: relative; /* lets framer-motion measure scroll offsets */
   font-family: var(--font-sans), system-ui, sans-serif;
@@ -180,9 +185,9 @@ body {
 
 /* ─── Layout Utilities ────────────────────────────────────────────────────── */
 .container {
-  max-width: 1200px;
+  max-width: 1840px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--gutter);
 }
 
 .section {
@@ -205,17 +210,15 @@ body {
 /* ─── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 992px) {
   :root {
-    --section-padding: 90px;
+    --section-padding: 76px;
   }
   
 }
 
 @media (max-width: 768px) {
   :root {
-    --section-padding: 70px;
+    --section-padding: 60px;
   }
-
-  .container { padding: 0 20px; }
 
   
 
@@ -223,11 +226,9 @@ body {
 
 @media (max-width: 480px) {
   :root {
-    --section-padding: 50px;
+    --section-padding: 44px;
   }
   
-  .container { padding: 0 16px; }
-
   
 }
 
@@ -261,4 +262,16 @@ body {
 }
 .skip-link:focus {
   transform: none;
+}
+
+/* Luffy's Gomu Gomu Pistol makes things wobble like rubber. */
+@keyframes jelly {
+  0% { transform: scale(1, 1); }
+  25% { transform: scale(1.1, 0.9); }
+  50% { transform: scale(0.94, 1.07); }
+  75% { transform: scale(1.04, 0.97); }
+  100% { transform: scale(1, 1); }
+}
+.jelly {
+  animation: jelly 0.7s ease-out;
 }

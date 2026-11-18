@@ -1,0 +1,46 @@
+.luffy {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint;
+  will-change: contents;
+}
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 6px 14px;
+  border: 3px solid #17151f;
+  border-radius: 16px;
+  background: #fff;
+  color: #17151f;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  bottom: -12px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-right: 3px solid #17151f;
+  border-bottom: 3px solid #17151f;
+  transform: rotate(45deg) skew(10deg, 10deg);
+}

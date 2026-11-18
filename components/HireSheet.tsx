@@ -52,7 +52,7 @@ export default function HireSheet({
 
         <p className={styles.eyebrow}>
           <span className={styles.dot} /> {personalInfo.availability.label} ·{" "}
-          {personalInfo.location}
+          {personalInfo.location.split(",")[0]}
         </p>
         <h2 id="hire-title" className={styles.title}>
           {personalInfo.name}

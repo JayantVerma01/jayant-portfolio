@@ -4,7 +4,7 @@ import { Pause, Play } from "lucide-react";
 import { personalInfo } from "@/lib/data";
 import styles from "./BadgeFace.module.css";
 
-/** The front of the ID badge. Used on the 3D card (via <Html>) and as the static fallback. */
+/** Static (non-3D) version of the ID badge. Mirrors drawBadge() in Lanyard.tsx. */
 export default function BadgeFace({
   playing,
   onPlay,
@@ -14,11 +14,6 @@ export default function BadgeFace({
 }) {
   return (
     <div className={styles.face}>
-      <div className={styles.top}>
-        <span>Staff pass</span>
-        <span>2026</span>
-      </div>
-
       <div className={styles.photo}>
         {personalInfo.photo ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -36,7 +31,6 @@ export default function BadgeFace({
       <div className={styles.meta}>
         <h2 className={styles.name}>{personalInfo.name}</h2>
         <p className={styles.role}>{personalInfo.role}</p>
-        <p className={styles.loc}>{personalInfo.location}</p>
       </div>
 
       <button

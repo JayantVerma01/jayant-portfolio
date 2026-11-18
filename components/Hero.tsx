@@ -1,14 +1,23 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { AnimatePresence, motion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { ArrowDown, Download, Pause, Play, RotateCcw } from "lucide-react";
-import { kpis, personalInfo } from "@/lib/data";
+import { personalInfo } from "@/lib/data";
 import { useRich3D } from "@/hooks/useRich3D";
 import { useIntroAudio } from "./IntroAudio";
-import CountUp from "./CountUp";
 import BadgeFace from "./hero/BadgeFace";
+import Envelope from "./hero/Envelope";
+import { AboutPanel } from "./About";
+import { SCENE } from "./hero/scene";
+import { cardScreen, heroP } from "./hero/store";
 import styles from "./Hero.module.css";
 
 const Lanyard = dynamic(() => import("./hero/Lanyard"), { ssr: false });
@@ -27,6 +36,27 @@ export default function Hero() {
   const audio = useIntroAudio();
   const rich = useRich3D();
   const [roleIdx, setRoleIdx] = useState(0);
+
+  // Scroll scene: stretch the lanyard, snap it, reveal About.
+  const sceneRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sceneRef,
+    offset: ["start start", "end end"],
+  });
+  const copyOpacity = useTransform(scrollYProgress, [0, SCENE.copyFadeTo], [1, 0]);
+  const copyY = useTransform(scrollYProgress, [0, SCENE.copyFadeTo], [0, -48]);
+  const copyVis = useTransform(scrollYProgress, (v) =>
+    v > SCENE.copyFadeTo - 0.01 ? "hidden" : "visible",
+  );
+  // The ID card's scatter progress drives how much of About has appeared.
+  const aboutP = useTransform(scrollYProgress, [SCENE.scatterFrom + 0.03, 0.7], [0, 1]);
+  const aboutVis = useTransform(scrollYProgress, (v) =>
+    v < SCENE.scatterFrom ? "hidden" : "visible",
+  );
+  useMotionValueEvent(scrollYProgress, "change", (v) => heroP.set(v));
+  useEffect(() => {
+    heroP.set(scrollYProgress.get());
+  }, [scrollYProgress]);
 
   useEffect(() => {
     const t = setInterval(
@@ -50,80 +80,90 @@ export default function Hero() {
     audio.sentences.find((s) => audio.wordIndex >= s.firstWord && audio.wordIndex <= s.lastWord) ??
     audio.sentences[audio.status === "ended" ? audio.sentences.length - 1 : 0];
 
-  const [first, last] = personalInfo.name.split(" ");
+  const [first] = personalInfo.name.split(" ");
 
   return (
-    <section id="home" className={styles.hero}>
-      <div className={styles.glow} aria-hidden="true" />
-
-      <h1 className={styles.giant} aria-label={personalInfo.name}>
-        <span aria-hidden="true">
-          {first} <em>{last}</em>
-        </span>
-      </h1>
-
-      <div className={`container ${styles.grid}`}>
+    <section
+      id={rich === true ? undefined : "home"}
+      ref={sceneRef}
+      className={`${styles.hero} ${rich === true ? styles.scene : ""}`}
+    >
+      {rich === true && (
+        <>
+          <span id="home" className={styles.anchorHome} aria-hidden="true" />
+          <span id="about" className={styles.anchorAbout} aria-hidden="true" />
+        </>
+      )}
+      <div className={styles.sticky}>
+      <motion.div
+        className={`container ${styles.grid}`}
+        style={rich === true ? { opacity: copyOpacity, y: copyY, visibility: copyVis } : undefined}
+      >
         <div className={styles.copy}>
           <p className={styles.eyebrow}>
-            <span className={styles.live} /> Portfolio / 2026
+            <span className={styles.live} /> {personalInfo.availability.label}
           </p>
 
-          <p className={styles.lead}>
-            Hello, I&apos;m {first}, a{" "}
+          <h1 className={styles.title}>
+            Hi, I&apos;m {first}.
             <span className={styles.role} aria-live="polite">
               <AnimatePresence mode="wait">
                 <motion.em
                   key={roleIdx}
-                  initial={{ y: 18, opacity: 0 }}
+                  initial={{ y: 16, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -18, opacity: 0 }}
+                  exit={{ y: -16, opacity: 0 }}
                   transition={{ duration: 0.35 }}
                 >
                   {personalInfo.taglines[roleIdx]}
                 </motion.em>
               </AnimatePresence>
-            </span>{" "}
-            from {personalInfo.location.split(",")[0]}.
-          </p>
+            </span>
+          </h1>
 
           <p className={styles.sub}>
-            I build production web apps and AI features end to end: APIs, data,
-            integrations and the interface on top.
+            I build production web apps and AI features, from the API to the
+            interface.
           </p>
 
-          {/* Intro player + live captions */}
-          <div className={`${styles.player} ${playing ? styles.playingState : ""}`}>
-            <div className={styles.controls}>
-              <button
-                className={styles.playBtn}
-                onClick={audio.toggle}
-                aria-label={playing ? "Pause introduction" : "Play introduction"}
-                data-cursor={playing ? "Pause" : "Play"}
-              >
-                {playing ? <Pause size={18} /> : <Play size={18} />}
-              </button>
-              <div className={styles.wave} aria-hidden="true">
-                {Array.from({ length: 28 }, (_, i) => (
-                  <i key={i} style={{ animationDelay: `${(i % 7) * 0.09}s` }} />
-                ))}
-              </div>
-              <span className={styles.timeLabel}>
-                {started ? `${Math.round(audio.progress * 100)}%` : "~35 sec"}
+          <div className={styles.actions}>
+            <button
+              className={`${styles.listen} ${playing ? styles.listening : ""}`}
+              onClick={audio.toggle}
+              aria-label={playing ? "Pause introduction" : "Play introduction"}
+              data-cursor={playing ? "Pause" : "Play"}
+            >
+              <span className={styles.listenIcon}>
+                {playing ? <Pause size={16} /> : <Play size={16} />}
               </span>
-              {started && (
-                <button
-                  className={styles.ghostBtn}
-                  onClick={audio.restart}
-                  aria-label="Restart introduction"
-                >
-                  <RotateCcw size={15} />
-                </button>
-              )}
-            </div>
+              <span>{playing ? "Playing" : "Hear my intro"}</span>
+              <span className={styles.bars} aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+            </button>
+            <a className={styles.cta} href="#projects">
+              See my work <ArrowDown size={16} />
+            </a>
+            <a className={styles.link} href={personalInfo.resume} download>
+              <Download size={15} /> Résumé
+            </a>
+            {started && (
+              <button
+                className={styles.restart}
+                onClick={audio.restart}
+                aria-label="Restart introduction"
+              >
+                <RotateCcw size={15} />
+              </button>
+            )}
+          </div>
 
-            <p className={styles.caption} aria-live="off">
-              {started ? (
-                currentSentence.text.split(" ").map((w, i) => {
+          {started && (
+            <div className={styles.captionWrap}>
+              <p className={styles.caption} aria-live="off">
+                {currentSentence.text.split(" ").map((w, i) => {
                   const gi = currentSentence.firstWord + i;
                   const cls =
                     gi === audio.wordIndex
@@ -136,62 +176,48 @@ export default function Hero() {
                       {w}{" "}
                     </span>
                   );
-                })
-              ) : (
-                <span className={styles.hint}>
-                  Press play and hear me introduce myself.
-                </span>
+                })}
+              </p>
+              <ul className={styles.cues} aria-label="Topics mentioned in the intro">
+                {CUES.map((c) => (
+                  <li key={c.label} className={lit(c.match) ? styles.cueOn : ""}>
+                    {c.label}
+                  </li>
+                ))}
+              </ul>
+              {audio.usingBrowserVoice && (
+                <p className={styles.note}>Preview voice. My own recording is coming.</p>
               )}
-            </p>
-
-            <ul className={styles.cues} aria-label="Topics mentioned in the intro">
-              {CUES.map((c) => (
-                <li key={c.label} className={lit(c.match) ? styles.cueOn : ""}>
-                  {c.label}
-                </li>
-              ))}
-            </ul>
-
-            {audio.usingBrowserVoice && (
-              <p className={styles.note}>Preview voice. My own recording is coming.</p>
-            )}
-          </div>
-
-          <div className={styles.ctas}>
-            <a className={styles.cta} href="#projects">
-              See my work <ArrowDown size={16} />
-            </a>
-            <a className={styles.ctaGhost} href={personalInfo.resume} download>
-              <Download size={16} /> Résumé
-            </a>
-          </div>
-
-          <ul className={styles.kpis}>
-            {kpis.map((k) => (
-              <li key={k.label}>
-                <strong>
-                  <CountUp value={k.value} suffix={k.suffix} />
-                </strong>
-                <span>{k.label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Badge */}
-        <div className={styles.badgeWrap}>
-          {rich === true && <Lanyard playing={playing} onTap={audio.toggle} />}
-          {rich === false && (
-            <div className={styles.staticBadge}>
-              <BadgeFace playing={playing} onPlay={audio.toggle} />
             </div>
           )}
-          {rich === true && (
-            <p className={styles.dragHint} aria-hidden="true">
-              drag me · click to play
-            </p>
-          )}
         </div>
+
+        {rich === false && (
+          <div className={styles.staticBadge}>
+            <BadgeFace playing={playing} onPlay={audio.toggle} />
+          </div>
+        )}
+      </motion.div>
+
+      {rich === true && (
+        <>
+          {/* About: assembled from the scattered ID-card tiles */}
+          <motion.div className={styles.aboutLayer} style={{ visibility: aboutVis }}>
+            <AboutPanel progress={aboutP} />
+          </motion.div>
+
+          {/* Full-bleed 3D stage */}
+          <div className={styles.stage}>
+            <Lanyard
+              playing={playing}
+              onTap={audio.toggle}
+              progress={scrollYProgress}
+              screen={cardScreen}
+            />
+          </div>
+          <Envelope progress={scrollYProgress} />
+        </>
+      )}
       </div>
     </section>
   );
