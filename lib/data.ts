@@ -315,12 +315,13 @@ export const experience = [
     duration: "August 2025 — Present",
     current: true,
     description:
-      "Working as a full-stack developer building enterprise web applications with React.js and Next.js. Responsible for designing scalable APIs, implementing RBAC systems, and delivering high-performance features.",
+      "Building enterprise construction software (EPC) with React.js and Next.js on the front end and Node.js services behind it.",
+    // TODO(Jayant): confirm these are your HG Infra / BuildSync contributions and add numbers.
     achievements: [
-      "Designed and developed RESTful APIs with Node.js",
-      "Implemented role-based access control across multiple modules",
-      "Optimized database queries improving performance by 40%",
-      "Collaborated with cross-functional teams in Agile sprints",
+      "Work on BuildSync: material requests, machine allocation, RFI, gate entry and procurement workflows",
+      "Implemented role-based access control across modules",
+      "Integrated the platform with SAP",
+      "Optimized database queries, improving performance by 40%",
     ],
     tech: ["React.js", "Next.js", "Node.js", "Express.js", "MongoDB", "JWT", "Redux", "AWS S3", "SAP Integration"],
     color: "#a27cf5ff",
@@ -333,11 +334,11 @@ export const experience = [
     duration: "April 2025 — July 2025",
     current: false,
     description:
-      "Working as a backend developer building enterprise web applications with Node.js and Express.js. Responsible for designing scalable APIs, implementing RBAC systems, and delivering high-performance features.",
+      "Backend trainee building enterprise web application APIs with Node.js, Express.js and MySQL.",
+    // TODO(Jayant): replace with achievements specific to Hornet Dynamics.
     achievements: [
       "Designed and developed RESTful APIs with Node.js",
-      "Implemented role-based access control across multiple modules",
-      "Optimized database queries improving performance by 40%",
+      "Implemented role-based access control across modules",
       "Collaborated with cross-functional teams in Agile sprints",
     ],
     tech: ["Node.js", "Express.js", "MySQL", "JWT", "Redux", "AWS S3"],
