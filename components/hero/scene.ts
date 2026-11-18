@@ -12,12 +12,13 @@ import type { MotionValue } from "framer-motion";
  */
 export const SCENE = {
   stretchFrom: 0.04,
-  stretchTo: 0.36,
-  scatterFrom: 0.4,
-  scatterTo: 0.64,
+  stretchTo: 0.3, // card is fully stretched and centred
+  expandFrom: 0.31, // the card inflates like a balloon...
+  scatterFrom: 0.39, // ...then bursts into many pieces
+  scatterTo: 0.67,
   copyFadeTo: 0.17,
-  aboutDone: 0.72,
-  envFrom: 0.78,
+  aboutDone: 0.76,
+  envFrom: 0.82,
   envTo: 0.97,
 };
 

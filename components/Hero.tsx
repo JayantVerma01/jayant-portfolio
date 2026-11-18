@@ -49,7 +49,7 @@ export default function Hero() {
     v > SCENE.copyFadeTo - 0.01 ? "hidden" : "visible",
   );
   // The ID card's scatter progress drives how much of About has appeared.
-  const aboutP = useTransform(scrollYProgress, [SCENE.scatterFrom + 0.03, 0.7], [0, 1]);
+  const aboutP = useTransform(scrollYProgress, [SCENE.scatterFrom + 0.1, 0.78], [0, 1]);
   const aboutVis = useTransform(scrollYProgress, (v) =>
     v < SCENE.scatterFrom ? "hidden" : "visible",
   );

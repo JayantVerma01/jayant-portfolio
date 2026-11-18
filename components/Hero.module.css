@@ -270,11 +270,11 @@
 }
 .anchorHome {
   top: 0;
-  height: calc(238svh + var(--nav-height));
+  height: calc(255svh + var(--nav-height));
 }
 .anchorAbout {
-  top: calc(238svh + var(--nav-height));
-  height: calc(202svh - var(--nav-height));
+  top: calc(255svh + var(--nav-height));
+  height: calc(185svh - var(--nav-height));
 }
 
 /* Full-bleed stage: the 3D card can swing across the whole hero. */

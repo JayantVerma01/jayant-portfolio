@@ -9,11 +9,11 @@ import styles from "./Experience.module.css";
 
 type Job = (typeof experience)[number];
 
-/** The headline number on each wanted poster. */
-const BOUNTY: Record<number, { n: string; unit: string }> = {
-  3: { n: "15+", unit: "REST endpoints shipped" },
-  2: { n: "RBAC", unit: "access control built" },
-  1: { n: "−40%", unit: "query time" },
+/** A different portrait per poster (none of them is the ID-card photo). */
+const PHOTOS: Record<number, string> = {
+  1: "/images/exp-hg.webp",
+  2: "/images/exp-hornet.webp",
+  3: "/images/exp-fixl.webp",
 };
 
 function Island({ color, letter, chest = false }: { color: string; letter?: string; chest?: boolean }) {
@@ -61,7 +61,8 @@ function Island({ color, letter, chest = false }: { color: string; letter?: stri
 function Poster({ job, index }: { job: Job; index: number }) {
   const [flipped, setFlipped] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const bounty = BOUNTY[job.id] ?? { n: "★", unit: "shipped" };
+  const skills = job.tech.slice(0, 5);
+  const more = job.tech.length - skills.length;
 
   const move = (e: React.PointerEvent<HTMLElement>) => {
     const el = e.currentTarget;
@@ -119,15 +120,21 @@ function Poster({ job, index }: { job: Job; index: number }) {
             <p className={styles.wantedSub}>for shipping production code</p>
             <div className={styles.photo}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/jayant-portrait.webp" alt="" width={320} height={400} loading="lazy" />
-              <span className={styles.stamp}>{job.current ? "Now" : "Done"}</span>
+              <img src={PHOTOS[job.id] ?? "/images/exp-hg.webp"} alt="" width={400} height={500} loading="lazy" />
             </div>
+            <span className={`${styles.stamp} ${job.current ? styles.stampNow : styles.stampDone}`}>
+              {job.current ? "Current" : "Done"}
+            </span>
             <h3 className={styles.role}>{job.role}</h3>
             <p className={styles.company}>{job.company}</p>
             <div className={styles.bounty}>
-              <span>Bounty</span>
-              <strong>{bounty.n}</strong>
-              <em>{bounty.unit}</em>
+              <p className={styles.bountyTag}>★ Bounty: skills ★</p>
+              <ul className={styles.bountyChips}>
+                {skills.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+                {more > 0 && <li className={styles.more}>+{more}</li>}
+              </ul>
             </div>
             <p className={styles.dates}>
               {job.current && <i className={styles.nowDot} />} {job.duration} · {job.type}
@@ -210,7 +217,7 @@ function Route({ wrap }: { wrap: React.RefObject<HTMLDivElement | null> }) {
 
 export default function Experience() {
   const wrap = useRef<HTMLDivElement>(null);
-  const voyage = [...experience].reverse(); // oldest port first, so the route reads forward in time
+  const voyage = experience; // current role first, then the earlier ones
 
   return (
     <section id="experience" className={`section ${styles.experience}`}>

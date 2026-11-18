@@ -213,8 +213,9 @@ function Rig() {
 const DROP = 0.6; // how far the card is pulled down while Luffy stretches it
 const SX = 0.16; // rubber squash on X at full stretch
 const SY = 0.3; // rubber stretch on Y at full stretch
-const COLS = 6;
-const ROWS = 8;
+const COLS = 9;
+const ROWS = 12;
+const smoother = (v: number) => v * v * v * (v * (v * 6 - 15) + 10);
 
 function rnd(seed: number) {
   const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
@@ -240,15 +241,22 @@ function Band({
     Array.from({ length: COLS * ROWS }, (_, i) => {
       const c = i % COLS;
       const r = Math.floor(i / COLS);
+      const dx = (c + 0.5) / COLS - 0.5;
+      const dy = (r + 0.5) / ROWS - 0.5;
+      const len = Math.hypot(dx, dy) || 1;
       return {
         c,
         r,
-        fx: 0.1 + rnd(i + 1) * 0.86, // target, as a fraction of screen width
+        fx: 0.08 + rnd(i + 1) * 0.86, // where it lands, as a fraction of the screen
         fy: 0.16 + rnd(i + 91) * 0.7,
-        tz: 0.6 + rnd(i + 17) * 2.4,
-        spin: [(rnd(i + 5) - 0.5) * 9, (rnd(i + 6) - 0.5) * 9, (rnd(i + 7) - 0.5) * 12] as const,
-        delay: rnd(i + 33) * 0.3 + (r / ROWS) * 0.15,
-        lift: 0.4 + rnd(i + 44) * 1.4,
+        tz: 0.4 + rnd(i + 17) * 1.6,
+        spin: [(rnd(i + 5) - 0.5) * 3.2, (rnd(i + 6) - 0.5) * 3.2, (rnd(i + 7) - 0.5) * 6] as const,
+        // a ripple: pieces nearer the middle let go first
+        delay: (Math.hypot(dx, dy) / 0.707) * 0.34 + rnd(i + 33) * 0.1,
+        lift: 0.2 + rnd(i + 44) * 0.9,
+        ux: dx / len, // outward direction from the card centre
+        uy: -dy / len,
+        burst: 0.5 + rnd(i + 55) * 0.9,
       };
     }),
   );
@@ -367,12 +375,25 @@ function Band({
       }
       line.current?.geometry.setPositions(positions);
 
-      // Rubber: the card is pulled down, squashed in width and stretched in length.
-      const shake = e > 0.75 && sc === 0 ? Math.sin(state.clock.elapsedTime * 60) * 0.02 * ((e - 0.75) / 0.25) : 0;
+      // The card glides to the middle of the screen as the stretch builds.
+      const wH = 2 * 10.5 * Math.tan((25 * Math.PI) / 360);
+      const wW = (size.width / size.height) * wH;
+      const cEase = easeInOut(clamp01((p - SCENE.stretchFrom - 0.02) / 0.22));
+      state.camera.position.x = -wW * 0.26 * (1 - cEase);
+      state.camera.position.y = -0.62 * cEase; // lift the stretched card clear of the bottom edge
+
+      // Rubber: pulled down, squashed in width and stretched in length ... then inflated like a balloon.
+      const ex = easeInOut(clamp01((p - SCENE.expandFrom) / (SCENE.scatterFrom - SCENE.expandFrom)));
+      const GROW = 1.18;
+      const bSx = 1 - SX * e;
+      const bSy = 1 + SY * e;
+      const wob = ex > 0 && sc === 0 ? Math.sin(state.clock.elapsedTime * 22) * 0.014 * ex : 0;
+      const back = sc > 0 ? easeOut(sc) * (GROW - 1) : 0; // settle back to normal size as the pieces fly
+      const shake = e > 0.75 && sc === 0 ? Math.sin(state.clock.elapsedTime * 60) * 0.02 * ((e - 0.75) / 0.25) * (1 - ex) : 0;
       if (vis.current) {
-        vis.current.position.set(shake, 0.2 - DROP * e, 0);
-        vis.current.rotation.z = 0.14 * e;
-        vis.current.scale.set(1 - SX * e, 1 + SY * e, 1);
+        vis.current.position.set(shake, 0.2 - DROP * e, 0.7 * ex * (1 - sc));
+        vis.current.rotation.z = 0.14 * e * (1 - ex);
+        vis.current.scale.set(bSx + (GROW - bSx) * ex + wob - back, bSy + (GROW - bSy) * ex + wob - back, 1);
       }
       if (parts.current) parts.current.visible = sc <= 0.0001;
       if (line.current) {
@@ -381,28 +402,30 @@ function Band({
         line.current.visible = retract < 1;
       }
 
-      // Scatter: the card breaks into tiles that fly off and become the About details.
-      const worldH = 2 * 10.5 * Math.tan((25 * Math.PI) / 360);
-      const worldW = (size.width / size.height) * worldH;
+      // Scatter: the card breaks into many tiles that ripple outward and become the About details.
+      const cxf = screen.cx.get() / size.width || 0.5;
+      const cyf = screen.cy.get() / size.height || 0.5;
       if (tilesRef.current) {
         tilesRef.current.visible = sc > 0.0001;
         if (sc > 0.0001) {
           tilesRef.current.children.forEach((m, i) => {
             const t = tiles[i];
-            const u = easeInOut(clamp01((sc - t.delay) / (1 - t.delay)));
+            const u = clamp01((sc - t.delay) / 0.52);
+            const k = smoother(u);
+            const arc = Math.sin(u * Math.PI);
             const sx0 = (t.c + 0.5) * (CARD_W / COLS) - CARD_W / 2;
             const sy0 = CARD_H / 2 - (t.r + 0.5) * (CARD_H / ROWS);
-            const tx = (t.fx - 0.76) * worldW;
-            const ty = (0.5 - t.fy) * worldH;
+            const tx = (t.fx - cxf) * wW;
+            const ty = (cyf - t.fy) * wH;
             m.position.set(
-              sx0 + (tx - sx0) * u,
-              sy0 + (ty - sy0) * u + Math.sin(u * Math.PI) * t.lift,
-              0.03 + t.tz * Math.sin(u * Math.PI),
+              sx0 + (tx - sx0) * k + t.ux * t.burst * arc,
+              sy0 + (ty - sy0) * k + t.uy * t.burst * arc + t.lift * arc,
+              0.03 + t.tz * arc,
             );
-            m.rotation.set(t.spin[0] * u, t.spin[1] * u, t.spin[2] * u);
-            m.scale.setScalar(1 - 0.78 * u * u);
+            m.rotation.set(t.spin[0] * k, t.spin[1] * k, t.spin[2] * k);
+            m.scale.setScalar(1 - 0.8 * k * k);
             const mat = tileMats.current[i];
-            if (mat) mat.opacity = 1 - clamp01((u - 0.5) / 0.5);
+            if (mat) mat.opacity = 1 - clamp01((k - 0.55) / 0.45);
           });
         }
       }

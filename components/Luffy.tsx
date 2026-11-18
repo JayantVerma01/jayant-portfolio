@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { SCENE, clamp01, easeInOut, easeOut, sheetBump, sheetFrac } from "./hero/scene";
-import { cardScreen, deck, heroP, luffyPerch, luffyPunch } from "./hero/store";
+import { cardScreen, deck, heroP, luffyPerch, luffyPunch, luffyTalk } from "./hero/store";
 import { useRich3D } from "@/hooks/useRich3D";
 import styles from "./Luffy.module.css";
 import { LuffyArt, SH_L, SH_R, HEIGHT, drawArm, type Pt } from "./LuffyArt";
@@ -93,6 +93,7 @@ function LuffyWorld() {
     let gripL: Pt | null = null;
     let punch: { t: number; to: Pt } | null = null;
     let seenPunch = luffyPunch.id;
+    let seenTalk = luffyTalk.id;
     let perched: HTMLElement | null = null;
     let hj: { t: number; dur: number; from: Pt; apex: number; pre: number; roll: boolean; n: number; sgn: 1 | -1 } | null = null;
     let rollAmt = 0; // 0 = standing, 1 = curled into a ball
@@ -263,7 +264,7 @@ function LuffyWorld() {
         slowT = time;
         zoneNowC = "";
         if (deckMode) {
-          for (const id of ["experience", "process", "contact"]) {
+          for (const id of ["experience", "process", "contact", "footer"]) {
             const z = q1("#" + id);
             if (!z) continue;
             const zr = z.getBoundingClientRect();
@@ -318,7 +319,7 @@ function LuffyWorld() {
         }
       }
       if (tick && roamMode && inZone && zoneId !== "experience" && !hoverUser) {
-        const goal = q1(zoneId === "process" ? "[data-proc-stand]" : "[data-contact-stand]") as HTMLElement | null;
+        const goal = q1(zoneId === "process" ? "[data-proc-stand]" : zoneId === "footer" ? "[data-footer-seat]" : "[data-contact-stand]") as HTMLElement | null;
         if (goal && goal !== hoverEl) {
           hoverEl = goal;
           hoverUntil = Infinity;
@@ -327,7 +328,7 @@ function LuffyWorld() {
       if (roamMode) {
         if (tick) {
           let v = 0;
-          for (const id of ["projects", "experience", "process", "contact"]) {
+          for (const id of ["projects", "experience", "process", "contact", "footer"]) {
             const sec = q1("#" + id);
             if (!sec) continue;
             const r = sec.getBoundingClientRect();
@@ -338,6 +339,11 @@ function LuffyWorld() {
         visOverride = visC;
       }
 
+      if (luffyTalk.id !== seenTalk) {
+        seenTalk = luffyTalk.id;
+        landText = luffyTalk.text;
+        landUntil = time + 1.4;
+      }
       if (luffyPunch.id !== seenPunch) {
         seenPunch = luffyPunch.id;
         const pe = luffyPunch.el;
@@ -500,7 +506,7 @@ function LuffyWorld() {
       } else if (pulling || bazooka) {
         const gxv = cardScreen.gx.get();
         const gyv = cardScreen.gy.get();
-        const dist = pulling ? 130 + e * Math.min(W * 0.5, 600) : Math.min(W * 0.5, 600) + 40;
+        const dist = pulling ? 130 + e * Math.min(W * 0.3, 420) : Math.min(W * 0.3, 420) + 40;
         tx = Math.max(40, gxv - dist);
         L.dir = 1;
         act = null;
@@ -549,7 +555,8 @@ function LuffyWorld() {
           hoverEl.hasAttribute("data-exp-poster") ||
           hoverEl.hasAttribute("data-exp-stop") ||
           hoverEl.hasAttribute("data-proc-stand") ||
-          hoverEl.hasAttribute("data-contact-stand");
+          hoverEl.hasAttribute("data-contact-stand") ||
+          hoverEl.hasAttribute("data-footer-seat");
         const tg: Pt = {
           x: r.left + r.width * 0.5,
           y: isExp ? Math.min(Math.max(r.top + 4, 200), H - 70) : r.top + 4,

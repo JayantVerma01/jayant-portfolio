@@ -38,3 +38,10 @@ export function punchAt(el: HTMLElement | null) {
   luffyPunch.el = el;
   luffyPunch.id += 1;
 }
+
+/** Make Luffy say something in a speech bubble. */
+export const luffyTalk: { text: string; id: number } = { text: "", id: 0 };
+export function luffySay(text: string) {
+  luffyTalk.text = text;
+  luffyTalk.id += 1;
+}
