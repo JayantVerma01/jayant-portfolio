@@ -18,10 +18,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const current = document.documentElement.getAttribute("data-theme");
     // Sync React state with the attribute set by the init script.
-    const id = requestAnimationFrame(() =>
-      setTheme(current === "light" ? "light" : "dark"),
-    );
-    return () => cancelAnimationFrame(id);
+    const id = setTimeout(() => setTheme(current === "light" ? "light" : "dark"), 0);
+    return () => clearTimeout(id);
   }, []);
 
   const toggleTheme = useCallback(() => {

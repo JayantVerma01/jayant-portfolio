@@ -13,6 +13,12 @@
   font-size: var(--fs-label);
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+.leaving {
+  transform: translateY(-100%);
+  pointer-events: none;
 }
 
 .top,

@@ -22,8 +22,9 @@ function detect() {
 export function useRich3D() {
   const [rich, setRich] = useState<boolean | null>(null);
   useEffect(() => {
-    const id = requestAnimationFrame(() => setRich(detect()));
-    return () => cancelAnimationFrame(id);
+    // Timer, not requestAnimationFrame: rAF is paused in background/throttled tabs.
+    const id = setTimeout(() => setRich(detect()), 0);
+    return () => clearTimeout(id);
   }, []);
   return rich;
 }

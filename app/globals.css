@@ -153,6 +153,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 body {
+  position: relative; /* lets framer-motion measure scroll offsets */
   font-family: var(--font-sans), system-ui, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
