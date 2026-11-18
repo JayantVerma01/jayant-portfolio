@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, Download, Pause, Play, RotateCcw } from "lucide-react";
 import { kpis, personalInfo } from "@/lib/data";
+import { useRich3D } from "@/hooks/useRich3D";
 import { useIntroAudio } from "./IntroAudio";
 import CountUp from "./CountUp";
 import BadgeFace from "./hero/BadgeFace";
@@ -22,29 +23,10 @@ const CUES = [
   { label: "Razorpay", match: "Razorpay" },
 ];
 
-function supportsRichBadge() {
-  if (typeof window === "undefined") return false;
-  const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  const wide = window.matchMedia("(min-width: 960px)").matches;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!fine || !wide || reduced) return false;
-  try {
-    const c = document.createElement("canvas");
-    return !!(c.getContext("webgl2") || c.getContext("webgl"));
-  } catch {
-    return false;
-  }
-}
-
 export default function Hero() {
   const audio = useIntroAudio();
-  const [rich, setRich] = useState<boolean | null>(null);
+  const rich = useRich3D();
   const [roleIdx, setRoleIdx] = useState(0);
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setRich(supportsRichBadge()));
-    return () => cancelAnimationFrame(id);
-  }, []);
 
   useEffect(() => {
     const t = setInterval(
