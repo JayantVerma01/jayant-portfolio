@@ -1,99 +1,50 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Mail, ArrowUp } from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { personalInfo, navLinks } from "@/lib/data";
+import { ArrowUp } from "lucide-react";
+import { navLinks, personalInfo } from "@/lib/data";
 import styles from "./Footer.module.css";
 
+const BUILT_WITH = ["Next.js", "React", "Three.js", "GSAP", "Framer Motion"];
+
 export default function Footer() {
-  const message = encodeURIComponent("Hi Jayant, I'm interested in working with you.");
-  const redirectToWhatsapp = () => {
-    window.open(`https://wa.me/919588965801?text=${message}`, "message", "width=600,height=600,left=500,top=200,menubar=no,status=no,titlebar=no");
-  }
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const [first, last] = personalInfo.name.split(" ");
 
   return (
     <footer className={styles.footer}>
-      {/* Top gradient line */}
-      <div className={styles.topLine} />
-
       <div className="container">
-        <div className={styles.inner}>
-          {/* Left: logo + tagline */}
-          <div className={styles.brand}>
-            <div className={styles.logo}>
-              <div className={styles.logoIcon}>JV</div>
-              <span className={styles.logoText}>Jayant Verma</span>
-            </div>
-            <p className={styles.tagline}>
-              Building the future of the web, one commit at a time.
-            </p>
-            <div className={styles.socials}>
-              {[
-                { href: personalInfo.github, icon: <FaGithub size={16} /> },
-                { href: personalInfo.linkedin, icon: <FaLinkedin size={16} /> },
-                { href: `mailto:${personalInfo.email}`, icon: <Mail size={16} /> },
-              ].map((s, i) => (
-                <motion.a
-                  key={i}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.socialBtn}
-                  whileHover={{ scale: 1.2, y: -3 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  {s.icon}
-                </motion.a>
-              ))}
-            </div>
-          </div>
+        <p className={styles.end}>
+          <span /> That&apos;s the whole page. Thanks for listening. <span />
+        </p>
 
-          {/* Center: nav links */}
-          <nav className={styles.nav}>
-            <span className={styles.navTitle}>Quick Links</span>
-            {navLinks.map((link) => (
-              <button
-                key={link.href}
-                className={styles.navLink}
-                onClick={() => {
-                  const id = link.href.slice(1);
-                  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                {link.label}
-              </button>
-            ))}
+        <div className={styles.cols}>
+          <nav aria-label="Footer">
+            <ul className={styles.links}>
+              {navLinks.map((l) => (
+                <li key={l.href}>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
           </nav>
 
-          {/* Right: tech stack */}
-          <div className={styles.stack}>
-            <span className={styles.navTitle}>Built With</span>
-            {["Next.js 14", "TypeScript", "Framer Motion", "CSS Modules"].map((t) => (
-              <span key={t} className={styles.stackItem}>{t}</span>
+          <ul className={styles.built} aria-label="Built with">
+            {BUILT_WITH.map((b) => (
+              <li key={b}>{b}</li>
             ))}
-          </div>
+          </ul>
+
+          <a className={styles.top} href="#home" aria-label="Back to top">
+            <ArrowUp size={18} />
+          </a>
         </div>
 
-        {/* Bottom */}
-        <div className={styles.bottom}>
-          <p className={styles.copy}>
-            © {new Date().getFullYear()} .Designed and Built by{" "}
-            <span onClick={redirectToWhatsapp}
-            className={styles.highlight}>Jayant Verma.</span>
-          </p>
+        <p className={styles.giant} aria-hidden="true">
+          {first} <em>{last}</em>
+        </p>
 
-          <motion.button
-            className={styles.scrollTop}
-            onClick={scrollTop}
-            whileHover={{ scale: 1.1, y: -2 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Scroll to top"
-          >
-            <ArrowUp size={16} />
-          </motion.button>
-        </div>
+        <p className={styles.copy}>
+          © {new Date().getFullYear()} {personalInfo.name}. Designed and built by me.
+        </p>
       </div>
     </footer>
   );

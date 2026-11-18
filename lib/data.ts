@@ -12,6 +12,9 @@ export const personalInfo = {
   bio: "I'm a passionate Full Stack Developer with 2 years of experience building scalable web applications and AI-powered solutions. I specialize in crafting seamless user experiences with React.js and Next.js on the frontend, while architecting robust APIs and microservices with Node.js on the backend. I love exploring the intersection of web development and AI to create intelligent, user-centric products.",
   location: "Jaipur, Rajasthan, India",
   email: "vermajayant03@gmail.com",
+  /** WhatsApp number in international format, digits only. Already public in the old footer. */
+  whatsapp: "919588965801",
+  timezone: "Asia/Kolkata",
   github: "https://github.com/JayantVerma01",
   linkedin: "https://linkedin.com/in/jayantverma1",
   resume: "/JAYANT VERMA RESUME.pdf",
