@@ -44,6 +44,10 @@ function LuffyWorld() {
   const aRf = useRef<SVGPathElement>(null);
   const aRh = useRef<SVGPathElement>(null);
   const aRfist = useRef<SVGGElement>(null);
+  const sLo = useRef<SVGPathElement>(null);
+  const sLf = useRef<SVGPathElement>(null);
+  const sRo = useRef<SVGPathElement>(null);
+  const sRf = useRef<SVGPathElement>(null);
   const bubble = useRef<HTMLDivElement>(null);
   const streak = useRef<SVGPathElement>(null);
 
@@ -805,10 +809,10 @@ function LuffyWorld() {
         "transform",
         `rotate(${(Math.sin(time * 2.2) * 2 + (pulling ? -6 * e : 0)).toFixed(1)} 395 255) translate(395 262) scale(1.2) translate(-395 -262)`,
       );
-      if (aLo.current && aLf.current && aLh.current && aLfist.current)
-        drawArm(aLo.current, aLf.current, aLh.current, aLfist.current, SH_L, { x: hlx, y: hly }, time);
-      if (aRo.current && aRf.current && aRh.current && aRfist.current)
-        drawArm(aRo.current, aRf.current, aRh.current, aRfist.current, SH_R, { x: hrx, y: hry }, time);
+      if (aLo.current && aLf.current && aLh.current && sLo.current && sLf.current && aLfist.current)
+        drawArm(aLo.current, aLf.current, aLh.current, sLo.current, sLf.current, aLfist.current, SH_L, { x: hlx, y: hly }, time);
+      if (aRo.current && aRf.current && aRh.current && sRo.current && sRf.current && aRfist.current)
+        drawArm(aRo.current, aRf.current, aRh.current, sRo.current, sRf.current, aRfist.current, SH_R, { x: hrx, y: hry }, time);
 
       // speed streaks trailing behind him while he rolls
       if (streak.current) {
@@ -856,7 +860,7 @@ function LuffyWorld() {
     <div ref={stage} className={styles.luffy} aria-hidden="true">
       <svg className={styles.svg}>
         <path ref={streak} fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" style={{ opacity: 0, color: "var(--paper)" }} />
-        <LuffyArt r={{ root, legL, legR, head, aLo, aLf, aLh, aLfist, aRo, aRf, aRh, aRfist }} />
+        <LuffyArt r={{ root, legL, legR, head, aLo, aLf, aLh, aLfist, aRo, aRf, aRh, aRfist, sLo, sLf, sRo, sRf }} />
       </svg>
       <div ref={bubble} className={styles.bubble} />
     </div>
