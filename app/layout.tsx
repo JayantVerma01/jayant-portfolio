@@ -1,6 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { ThemeProvider, themeInitScript } from "@/components/ThemeProvider";
+import SmoothScroll from "@/components/SmoothScroll";
+
+const sans = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
+const display = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Jayant Verma — Full Stack Developer | Next.js, Node.js, AI",
@@ -24,27 +36,32 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0b0d17" },
+    { media: "(prefers-color-scheme: light)", color: "#f3efe7" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${sans.variable} ${mono.variable} ${display.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body suppressHydrationWarning>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <SmoothScroll>{children}</SmoothScroll>
+        </ThemeProvider>
         <div className="noise-overlay" aria-hidden="true" />
       </body>
     </html>

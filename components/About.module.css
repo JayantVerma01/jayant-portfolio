@@ -83,7 +83,7 @@
 }
 
 .avatarInitials {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: 2rem;
   font-weight: 700;
   color: #fff;
@@ -101,7 +101,7 @@
 .bioInfo { text-align: center; }
 
 .bioName {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -184,7 +184,7 @@
 }
 
 .highlightTitle {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -203,7 +203,7 @@
 }
 
 .journeyTitle {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -246,7 +246,7 @@
 }
 
 .timelineYear {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.78rem;
   font-weight: 600;
   text-align: right;

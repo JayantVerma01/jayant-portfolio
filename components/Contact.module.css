@@ -26,7 +26,7 @@
 }
 
 .infoTitle {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -111,7 +111,7 @@
 }
 
 .formTitle {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -217,7 +217,7 @@
 }
 
 .successMsg h4 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-primary);

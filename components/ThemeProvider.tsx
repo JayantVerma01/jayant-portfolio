@@ -1,48 +1,39 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 type Theme = "dark" | "light";
+
 const ThemeContext = createContext<{
   theme: Theme;
   toggleTheme: () => void;
 }>({ theme: "dark", toggleTheme: () => {} });
 
+/** Runs before first paint (inlined in <head>) so there is no theme flash. */
+export const themeInitScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.setAttribute('data-theme','dark')}})()`;
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("theme") as Theme | null;
-    const preferred = window.matchMedia("(prefers-color-scheme: light)").matches
-      ? "light"
-      : "dark";
-    const initial = saved || preferred;
-    
-    // Set the DOM attribute immediately to avoid flash of unstyled content
-    document.documentElement.setAttribute("data-theme", initial);
-
-    // Defer state updates to avoid synchronous setState inside useEffect warning
-    const timeoutId = setTimeout(() => {
-      setTheme(initial);
-      setMounted(true);
-    }, 0);
-
-    return () => clearTimeout(timeoutId);
+    const current = document.documentElement.getAttribute("data-theme");
+    // Sync React state with the attribute set by the init script.
+    const id = requestAnimationFrame(() =>
+      setTheme(current === "light" ? "light" : "dark"),
+    );
+    return () => cancelAnimationFrame(id);
   }, []);
 
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    localStorage.setItem("theme", next);
-    document.documentElement.setAttribute("data-theme", next);
-  };
-
-  if (!mounted) {
-    return (
-      <div style={{ visibility: "hidden" }}>{children}</div>
-    );
-  }
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => {
+      const next: Theme = prev === "dark" ? "light" : "dark";
+      try {
+        localStorage.setItem("theme", next);
+      } catch {}
+      document.documentElement.setAttribute("data-theme", next);
+      return next;
+    });
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

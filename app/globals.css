@@ -1,66 +1,125 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* ═══ Design tokens — "Press Play" system ═══════════════════════════════════
+   Dark = ink-navy (default). Light = warm paper.
+   Legacy names (--bg-primary, --accent-*, …) are kept and remapped so the
+   existing components pick up the new palette until each phase replaces them. */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
 
-/* ─── CSS Variables ──────────────────────────────────────────────────────── */
-:root {
-  /* Dark mode defaults */
-  --bg-primary: #08080f;
-  --bg-secondary: #0e0e1a;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --bg-card-hover: rgba(255, 255, 255, 0.07);
-  --bg-glass: rgba(255, 255, 255, 0.05);
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(99, 102, 241, 0.4);
+  /* surfaces */
+  --ink-0: #07080f;
+  --ink-1: #0b0d17;
+  --ink-2: #11142a;
+  --ink-3: #1a1e3a;
+  --line: rgba(236, 232, 223, 0.1);
+  --line-strong: rgba(236, 232, 223, 0.22);
 
-  --accent-primary: #6366f1;
-  --accent-secondary: #8b5cf6;
-  --accent-cyan: #06b6d4;
-  --accent-green: #10b981;
+  /* type colours */
+  --paper: #ece8df;
+  --paper-dim: #a9a79f;
+  --paper-faint: #6b6a68;
+
+  /* single signature accent + rare highlight */
+  --signal: #7c5cff;
+  --signal-soft: rgba(124, 92, 255, 0.16);
+  --pulse: #22d3ee;
+  --live: #34d399;
+
+  /* legacy aliases */
+  --bg-primary: var(--ink-1);
+  --bg-secondary: var(--ink-2);
+  --bg-card: rgba(236, 232, 223, 0.04);
+  --bg-card-hover: rgba(236, 232, 223, 0.08);
+  --bg-glass: rgba(236, 232, 223, 0.05);
+  --border-color: var(--line);
+  --border-glow: rgba(124, 92, 255, 0.45);
+  --accent-primary: var(--signal);
+  --accent-secondary: #9b82ff;
+  --accent-cyan: var(--pulse);
+  --accent-green: var(--live);
   --accent-amber: #f59e0b;
   --accent-pink: #ec4899;
+  --text-primary: var(--paper);
+  --text-secondary: var(--paper-dim);
+  --text-muted: var(--paper-faint);
 
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
+  --gradient-primary: linear-gradient(135deg, #7c5cff, #9b82ff 55%, #22d3ee);
+  --gradient-glow: linear-gradient(135deg, rgba(124,92,255,0.2), rgba(34,211,238,0.12));
+  --gradient-card: linear-gradient(135deg, rgba(124,92,255,0.1), rgba(124,92,255,0.03));
 
-  --gradient-primary: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
-  --gradient-glow: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2), rgba(6,182,212,0.2));
-  --gradient-card: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.05));
-
-  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
+  --shadow-glow: 0 0 40px rgba(124, 92, 255, 0.18);
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --shadow-elevated: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --shadow-elevated: 0 20px 60px rgba(0, 0, 0, 0.55);
+  --grain-opacity: 0.05;
+}
 
+[data-theme="light"] {
+  color-scheme: light;
+
+  --ink-0: #ebe6db;
+  --ink-1: #f3efe7;
+  --ink-2: #ece7dc;
+  --ink-3: #e2dccf;
+  --line: rgba(20, 18, 30, 0.12);
+  --line-strong: rgba(20, 18, 30, 0.26);
+
+  --paper: #17151f;
+  --paper-dim: #55525c;
+  --paper-faint: #8a8791;
+
+  --signal: #5b3df0;
+  --signal-soft: rgba(91, 61, 240, 0.12);
+  --pulse: #0891b2;
+  --live: #059669;
+
+  --bg-card: rgba(255, 255, 255, 0.65);
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --bg-glass: rgba(255, 255, 255, 0.6);
+  --border-glow: rgba(91, 61, 240, 0.35);
+  --accent-secondary: #7a5cff;
+
+  --gradient-primary: linear-gradient(135deg, #5b3df0, #7a5cff 55%, #0891b2);
+  --gradient-glow: linear-gradient(135deg, rgba(91,61,240,0.14), rgba(8,145,178,0.1));
+  --gradient-card: linear-gradient(135deg, rgba(91,61,240,0.08), rgba(91,61,240,0.02));
+
+  --shadow-glow: 0 0 40px rgba(91, 61, 240, 0.12);
+  --shadow-card: 0 8px 32px rgba(20, 18, 30, 0.08);
+  --shadow-elevated: 0 20px 60px rgba(20, 18, 30, 0.14);
+  --grain-opacity: 0.07;
+}
+
+:root {
+  /* type scale (fluid) */
+  --fs-label: 0.75rem;
+  --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --fs-lead: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
+  --fs-h3: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+  --fs-h2: clamp(2.2rem, 1.4rem + 3.5vw, 4.5rem);
+  --fs-hero: clamp(3.5rem, 1rem + 11vw, 11rem);
+
+  /* radii */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-xl: 28px;
   --radius-full: 9999px;
 
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 700ms;
+  --transition-fast: var(--dur-fast) var(--ease-out);
+  --transition-base: var(--dur-base) var(--ease-out);
+  --transition-slow: var(--dur-slow) var(--ease-out);
 
+  /* layout */
   --nav-height: 72px;
   --section-padding: 120px;
+  --gutter: clamp(20px, 4vw, 56px);
 }
 
-[data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #f1f5f9;
-  --bg-card: rgba(255, 255, 255, 0.8);
-  --bg-card-hover: rgba(255, 255, 255, 0.95);
-  --bg-glass: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(0, 0, 0, 0.08);
-  --border-glow: rgba(99, 102, 241, 0.3);
-
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-
-  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.1);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
-  --shadow-elevated: 0 20px 60px rgba(0, 0, 0, 0.12);
-}
 
 /* ─── Reset & Base ────────────────────────────────────────────────────────── */
 *, *::before, *::after {
@@ -70,12 +129,29 @@
 }
 
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: var(--nav-height);
 }
 
+/* Lenis handles smooth scrolling */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.7;
@@ -100,8 +176,8 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-secondary); }
 
 /* ─── Typography Utilities ────────────────────────────────────────────────── */
-.font-mono { font-family: 'JetBrains Mono', monospace; }
-.font-display { font-family: 'Space Grotesk', sans-serif; }
+.font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
+.font-display { font-family: var(--font-display), Georgia, serif; }
 
 .gradient-text {
   background: var(--gradient-primary);
@@ -135,7 +211,7 @@ body {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent-primary);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono), ui-monospace, monospace;
   margin-bottom: 16px;
 }
 
@@ -148,7 +224,7 @@ body {
 }
 
 .section-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
   line-height: 1.2;
@@ -241,7 +317,7 @@ body {
   border-radius: var(--radius-full);
   font-size: 0.78rem;
   font-weight: 600;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono), ui-monospace, monospace;
   background: rgba(99, 102, 241, 0.12);
   color: var(--accent-primary);
   border: 1px solid rgba(99, 102, 241, 0.2);
@@ -350,7 +426,7 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 999;
-  opacity: 0.025;
+  opacity: var(--grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
 }
 

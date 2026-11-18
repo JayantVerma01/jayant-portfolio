@@ -15,6 +15,8 @@ export const personalInfo = {
   github: "https://github.com/JayantVerma01",
   linkedin: "https://linkedin.com/in/jayantverma1",
   resume: "/JAYANT VERMA RESUME.pdf",
+  role: "Full Stack & AI Engineer",
+  availability: { open: true, label: "Open to work" },
   experienceYears: "2+",
   projectsCount: "10+",
   technologiesCount: "10+",
@@ -62,7 +64,7 @@ export const skills = [
       { name: "AI Integration", level: 82 },
       { name: "Vision Pipeline", level: 82 },
       { name: "Vector Embeddings", level: 80 },
-      { name: "Sementic Search", level: 75 },
+      { name: "Semantic Search", level: 75 },
     ],
   },
   {
@@ -366,4 +368,31 @@ export const navLinks = [
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
+];
+
+// ─── v2 additions (Phase 0) ──────────────────────────────────────────────────
+
+/** Headline numbers shown in the hero. Keep in sync with real figures. */
+export const kpis = [
+  { value: 2, suffix: "+", label: "Years shipping" },
+  { value: 10, suffix: "+", label: "Projects built" },
+  { value: 1500, suffix: "+", label: "Commits on BuildSync" },
+];
+
+/**
+ * Intro audio. DRAFT script — replace with the final recording's text.
+ * `src` is empty until the audio file exists in /public/audio.
+ * `words` timing is generated once the recording is aligned (Phase 2).
+ */
+export const intro = {
+  src: "",
+  script:
+    "Hi, I'm Jayant Verma, a full-stack developer from Jaipur. For the last two years I've been building things that actually run in production: enterprise construction software at HG Infra, e-commerce platforms, and AI products using RAG and LangGraph. I like the backend most: clean APIs, solid data, integrations like SAP and Razorpay. And I love turning that into interfaces people enjoy using. If you're hiring for a Full Stack or AI engineering role, I'd love to talk. Scroll down to see what I've built. Thanks for listening.",
+};
+
+export const process = [
+  { step: "First", title: "Listen closely", body: "Understand the problem, the users and the constraints before touching code.", outputs: ["Brief", "Scope", "Success metric"] },
+  { step: "Then", title: "Design the system", body: "APIs, data model and integrations sketched first, so the build stays simple.", outputs: ["Schema", "API contract", "Architecture"] },
+  { step: "Next", title: "Build to last", body: "Typed, tested, role-secured code with clear boundaries.", outputs: ["Frontend", "Backend", "AI pipeline"] },
+  { step: "Finally", title: "Ship and refine", body: "CI/CD, monitoring and iteration after launch.", outputs: ["Deploy", "Monitoring", "Iteration"] },
 ];
