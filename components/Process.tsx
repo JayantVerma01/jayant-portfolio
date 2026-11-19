@@ -175,8 +175,18 @@ function Scene() {
   );
 }
 
-/** Touch / small screens: the four steps as plain stacked cards. */
+/** Phones: the four steps along a sea route; a little ship's wheel sails down it as you scroll. */
 function Stack() {
+  const ol = useRef<HTMLOListElement>(null);
+  const [reached, setReached] = useState(0);
+  const { scrollYProgress } = useScroll({ target: ol, offset: ["start 62%", "end 70%"] });
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 540]);
+  const top = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const grow = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const n = Math.min(N, Math.max(0, Math.round(v * (N - 1)) + 1));
+    setReached((r) => (r === n ? r : n));
+  });
   return (
     <section id="process" className={`section ${styles.stackSection}`}>
       <div className="container">
@@ -184,11 +194,28 @@ function Stack() {
         <h2 className={styles.title}>
           How I <em>work</em>.
         </h2>
-        <ol className={styles.stack}>
+        <p className={styles.routeSub}>Follow the wheel. Four stops from brief to launch.</p>
+        <ol className={styles.stack} ref={ol}>
+          <span className={styles.routeLine} aria-hidden="true" />
+          <motion.span className={styles.routeFill} style={{ scaleY: grow }} aria-hidden="true" />
+          <motion.span className={styles.sailor} style={{ top }} aria-hidden="true">
+            <Wheel rotate={rotate} />
+          </motion.span>
           {process.map((s, i) => {
             const Icon = ICONS[i] ?? Hammer;
             return (
-              <li key={s.title} className={styles.panel}>
+              <motion.li
+                key={s.title}
+                className={styles.panel}
+                data-luffy-perch=""
+                initial={{ opacity: 0, x: 40, rotate: 2 }}
+                whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+                viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+                transition={{ type: "spring", stiffness: 140, damping: 18 }}
+              >
+                <span className={`${styles.buoy} ${i < reached ? styles.buoyOn : ""}`} aria-hidden="true">
+                  {i + 1}
+                </span>
                 <span className={styles.bigNo} aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -203,7 +230,7 @@ function Stack() {
                     <li key={o}>{o}</li>
                   ))}
                 </ul>
-              </li>
+              </motion.li>
             );
           })}
         </ol>

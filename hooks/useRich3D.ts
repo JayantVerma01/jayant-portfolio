@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 
 function detect() {
-  const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  const wide = window.matchMedia("(min-width: 960px)").matches;
+  // tablets get the same scenes as desktop; only phones fall back
+  const fine = true;
+  const wide = window.matchMedia("(min-width: 700px)").matches;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!fine || !wide || reduced) return false;
   try {

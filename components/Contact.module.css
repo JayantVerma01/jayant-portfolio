@@ -502,9 +502,58 @@
   color: var(--paper-faint);
 }
 
-@media (max-width: 960px) {
+@media (min-width: 700px) and (max-width: 1100px) {
+  .plankValue {
+    font-size: 0.82rem;
+    overflow-wrap: anywhere;
+  }
+  .plankLabel {
+    font-size: 0.55rem;
+  }
+}
+@media (max-width: 699px) {
   .layout {
     grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  .title {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+  .post {
+    padding: 46px 0 28px;
+  }
+  .signs {
+    gap: 10px;
+  }
+  .sign {
+    width: min(100%, 330px);
+  }
+  .letterCol {
+    align-items: stretch;
+  }
+  .letter {
+    padding: 26px 18px 22px 42px;
+    box-shadow:
+      6px 8px 0 rgba(23, 21, 31, 0.9),
+      inset 0 0 0 4px #f7edd3,
+      inset 0 0 0 6px rgba(23, 21, 31, 0.75);
+  }
+  .dear {
+    font-size: 1.7rem;
+  }
+  .field input,
+  .field textarea {
+    font-size: 1.1rem;
+  }
+  .foot {
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 6px;
+  }
+  .seal {
+    width: 84px;
+    height: 84px;
+    margin-bottom: 8px;
   }
   .signR,
   .signL {

@@ -315,13 +315,16 @@
   white-space: nowrap;
 }
 
-@media (max-width: 959px) {
+@media (max-width: 699px) {
   .grid {
     grid-template-columns: 1fr;
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 699px) {
   .staticBadge {
-    transform: scale(0.9) rotate(-3deg);
+    width: 320px;
+    margin: 4px auto 0;
+    zoom: 0.92;
+    transform: rotate(-2deg);
   }
 }

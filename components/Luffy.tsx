@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import LuffyLite from "./LuffyLite";
 import { SCENE, clamp01, easeInOut, easeOut, sheetBump, sheetFrac } from "./hero/scene";
 import { cardScreen, deck, heroP, luffyPerch, luffyPunch, luffyTalk } from "./hero/store";
 import { useRich3D } from "@/hooks/useRich3D";
@@ -27,7 +28,8 @@ const LINES = ["Yosha!", "Shishishi!", "Adventure!", "Meat!?", "Gomu Gomu!"];
 /** One page-level Luffy that roams the hero, then hops across the skills deck. */
 export default function Luffy() {
   const rich = useRich3D();
-  return rich === true ? <LuffyWorld /> : null;
+  if (rich === null) return null;
+  return rich ? <LuffyWorld /> : <LuffyLite />;
 }
 
 function LuffyWorld() {

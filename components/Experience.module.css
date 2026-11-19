@@ -554,34 +554,77 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+/* tablet + phone: a compact zig-zag, the route still snakes between every island and poster */
 @media (max-width: 899px) {
-  .route {
-    display: none;
+  .voyage {
+    gap: 34px;
   }
   .stop {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 14px;
+    grid-template-columns: minmax(0, 1fr) 150px;
+    gap: 8px;
+    align-items: center;
   }
-  .stop .cell:first-child,
-  .right .cell:first-child {
-    order: 2;
+  .stop .cell:first-child {
+    order: 1;
     justify-content: center;
+    width: 100%;
   }
   .islandCell {
-    order: 1 !important;
-    width: min(260px, 70vw);
+    order: 2;
+    width: 100%;
+  }
+  .right {
+    grid-template-columns: 150px minmax(0, 1fr);
+  }
+  .right .islandCell {
+    order: 1;
+  }
+  .right .cell:first-child {
+    order: 2;
   }
   .year {
     display: none;
+  }
+  .final {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .final .cell {
+    display: none;
+  }
+  .port {
+    font-size: 0.95rem;
   }
 }
 @media (max-width: 560px) {
   .steps {
     grid-template-columns: 1fr;
   }
-  .poster {
-    height: 520px;
+  .stop {
+    grid-template-columns: minmax(0, 1fr) 84px;
+    gap: 6px;
+  }
+  .right {
+    grid-template-columns: 84px minmax(0, 1fr);
+  }
+  .posterWrap {
+    zoom: 0.72;
+    width: 360px;
+    margin-inline: auto;
+  }
+  .stop .cell:first-child {
+    justify-content: center;
+  }
+  .port {
+    font-size: 0.78rem;
+    max-width: 12ch;
+  }
+  .final .port {
+    font-size: 1.1rem;
+  }
+  .cta {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 @media (prefers-reduced-motion: reduce) {

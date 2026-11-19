@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Code2 } from "lucide-react";
 import { projects } from "@/lib/data";
-import { perchOn } from "./hero/store";
+import { perchOn, punchAt } from "./hero/store";
 import { useRich3D } from "@/hooks/useRich3D";
 import type { Project } from "./projects/cover";
 import styles from "./Projects.module.css";
@@ -133,15 +133,46 @@ export default function Projects() {
   const grid = category === "All" ? projects : projects.filter((p) => p.category === category);
   const current = featured[active];
 
+  // Phone rail <-> arrows: swiping the rail selects a project, and the arrows / taps scroll the rail
+  const railRef = useRef<HTMLDivElement>(null);
+  const progUntil = useRef(0);
+  const centreOf = (r: HTMLElement, it: HTMLElement) =>
+    it.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - (r.clientWidth - it.clientWidth) / 2;
+  useEffect(() => {
+    const r = railRef.current;
+    const it = r?.children[active] as HTMLElement | undefined;
+    if (!r || !it) return;
+    if (Math.abs(centreOf(r, it) - r.scrollLeft) < 6) return;
+    progUntil.current = performance.now() + 700;
+    r.scrollTo({ left: centreOf(r, it), behavior: "smooth" });
+  }, [active, mode]);
+  const onRailScroll = () => {
+    if (performance.now() < progUntil.current) return;
+    const r = railRef.current;
+    if (!r) return;
+    let best = 0;
+    let bd = Infinity;
+    Array.from(r.children).forEach((c, i) => {
+      const d = Math.abs(centreOf(r, c as HTMLElement) - r.scrollLeft);
+      if (d < bd) {
+        bd = d;
+        best = i;
+      }
+    });
+    setActive((a) => (a === best ? a : best));
+  };
+
   // Luffy reads the newly selected project: hop onto its detail panel.
   useEffect(() => {
     if (mode !== "featured") return;
-    const t = window.setTimeout(
-      () => perchOn(document.querySelector("[data-luffy-detail]") as HTMLElement | null),
-      420,
-    );
+    const t = window.setTimeout(() => {
+      // phones: he pokes the card you picked in the rail, then hops onto its details
+      const item = railRef.current?.children[active] as HTMLElement | undefined;
+      if (item && rich === false) punchAt(item);
+      perchOn(document.querySelector("[data-luffy-detail]") as HTMLElement | null);
+    }, 420);
     return () => window.clearTimeout(t);
-  }, [active, mode]);
+  }, [active, mode, rich]);
 
   return (
     <section id="projects" ref={sectionRef} className={`section ${styles.projects}`}>
@@ -183,7 +214,7 @@ export default function Projects() {
             )}
 
             {rich === false && (
-              <div className={styles.rail} role="listbox" aria-label="Featured projects">
+              <div ref={railRef} onScroll={onRailScroll} className={styles.rail} role="listbox" aria-label="Featured projects">
                 {featured.map((p, i) => (
                   <button
                     key={p.id}

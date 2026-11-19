@@ -182,17 +182,18 @@ function Route({ wrap }: { wrap: React.RefObject<HTMLDivElement | null> }) {
         const r = n.getBoundingClientRect();
         return { x: r.left - box.left + r.width / 2, y: r.top - box.top + 6 };
       });
-      if (pts.length < 2 || window.innerWidth < 900) {
+      if (pts.length < 2) {
         setD("");
         return;
       }
+      const narrow = window.innerWidth < 900;
       let path = `M${pts[0].x.toFixed(0)} ${(pts[0].y - 70).toFixed(0)} L${pts[0].x.toFixed(0)} ${pts[0].y.toFixed(0)}`;
       for (let i = 0; i < pts.length - 1; i++) {
         const a = pts[i];
         const b = pts[i + 1];
         const s = i % 2 === 0 ? 1 : -1;
         const dy = b.y - a.y;
-        path += ` C${(a.x + s * 220).toFixed(0)} ${(a.y + dy * 0.3).toFixed(0)} ${(b.x - s * 220).toFixed(0)} ${(b.y - dy * 0.3).toFixed(0)} ${b.x.toFixed(0)} ${b.y.toFixed(0)}`;
+        path += ` C${narrow ? a.x.toFixed(0) : (a.x + s * 220).toFixed(0)} ${(a.y + dy * (narrow ? 0.55 : 0.3)).toFixed(0)} ${narrow ? b.x.toFixed(0) : (b.x - s * 220).toFixed(0)} ${(b.y - dy * (narrow ? 0.55 : 0.3)).toFixed(0)} ${b.x.toFixed(0)} ${b.y.toFixed(0)}`;
       }
       setD(path);
     };

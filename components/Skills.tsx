@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { createRef, useEffect, useMemo, useRef, useState } from "react";
 import {
   motion,
+  motionValue,
   useMotionValue,
+  useInView,
   useMotionValueEvent,
   useScroll,
   useTransform,
@@ -12,7 +14,7 @@ import {
 import { projects, skills } from "@/lib/data";
 import { skillGroups, allSkills } from "@/lib/skills";
 import { useRich3D } from "@/hooks/useRich3D";
-import { deck } from "./hero/store";
+import { deck, luffySay, perchOn } from "./hero/store";
 import styles from "./Skills.module.css";
 
 const N = skillGroups.length;
@@ -27,7 +29,7 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 function useSummary(focus: string | null) {
   return useMemo(() => {
-    if (!focus) return "Hover a skill to see where I've used it.";
+    if (!focus) return "Hover or tap a skill to see where I've used it.";
     const s = allSkills.find((x) => x.name === focus);
     const names = (s?.projectIds ?? []).map((id) => projects.find((p) => p.id === id)?.title);
     return names.length
@@ -289,9 +291,59 @@ function DeckScene() {
 }
 
 /** Touch / small screens: a plain grid of the same cards. */
+/** Phones: the deck stacks up as you scroll. Each new card slides over the last, and Luffy leaps onto it. */
+function StackCard({
+  i,
+  cardRef: ref,
+  cover,
+  onFocus,
+}: {
+  i: number;
+  cardRef: React.RefObject<HTMLDivElement | null>;
+  cover: MotionValue<number>;
+  onFocus: (v: string | null) => void;
+}) {
+  const scale = useTransform(cover, [0, 1], [1, 0.93]);
+  const dim = useTransform(cover, [0, 1], [1, 0.8]);
+  // Luffy hops onto the card as it slides in
+  const inView = useInView(ref, { margin: "0px 0px -42% 0px", once: true });
+  useEffect(() => {
+    if (!inView) return;
+    perchOn(ref.current);
+    luffySay(i === 0 ? "Dealing cards!" : `${skillGroups[i].skills.length} skills!`);
+  }, [inView, i, ref]);
+  return (
+    <motion.div
+      ref={ref}
+      className={styles.gridCard}
+      style={{ scale, opacity: dim, top: `${96 + i * 9}px`, zIndex: i + 1 }}
+      initial={{ opacity: 0, x: i % 2 ? 46 : -46, rotate: i % 2 ? 5 : -5 }}
+      whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
+      transition={{ type: "spring", stiffness: 140, damping: 18 }}
+    >
+      <div className={styles.face}>
+        <CardFront index={i} onFocus={onFocus} />
+      </div>
+    </motion.div>
+  );
+}
+
 function DeckGrid() {
   const [focus, setFocus] = useState<string | null>(null);
   const summary = useSummary(focus);
+  const refs = useMemo(() => skillGroups.map(() => createRef<HTMLDivElement>()), []);
+  // how far the next card has slid over each card (0 = not yet, 1 = fully covering)
+  const covers = useMemo(() => skillGroups.map(() => motionValue(0)), []);
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", () => {
+    for (let i = 0; i < refs.length - 1; i++) {
+      const n = refs[i + 1].current;
+      if (!n) continue;
+      const rest = 96 + (i + 1) * 9;
+      covers[i].set(clamp01(1 - (n.getBoundingClientRect().top - rest) / 380));
+    }
+  });
   return (
     <section id="skills" className={`section ${styles.gridSection}`}>
       <div className="container">
@@ -304,11 +356,7 @@ function DeckGrid() {
         <p className={styles.summaryStatic}>{summary}</p>
         <div className={styles.grid}>
           {skillGroups.map((_, i) => (
-            <div key={i} className={styles.gridCard}>
-              <div className={styles.face}>
-                <CardFront index={i} onFocus={setFocus} />
-              </div>
-            </div>
+            <StackCard key={i} i={i} cardRef={refs[i]} cover={covers[i]} onFocus={setFocus} />
           ))}
         </div>
       </div>

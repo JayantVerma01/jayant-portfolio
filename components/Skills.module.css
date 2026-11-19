@@ -345,14 +345,18 @@
   margin-bottom: 18px;
 }
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 22px;
+  display: block;
   margin-top: 22px;
 }
 .gridCard {
-  position: relative;
+  position: sticky;
   height: 400px;
+  margin-bottom: 34px;
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+.gridCard:last-child {
+  margin-bottom: 0;
 }
 .gridCard .face {
   position: absolute;

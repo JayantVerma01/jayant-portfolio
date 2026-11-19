@@ -254,11 +254,79 @@
   position: relative;
 }
 .stack {
+  position: relative;
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  margin-top: 22px;
+  padding-left: 58px;
+}
+.routeSub {
+  margin-top: 10px;
+  color: var(--paper-dim);
+  font-size: 0.95rem;
+}
+.routeLine,
+.routeFill {
+  position: absolute;
+  left: 27px;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 3px dashed rgba(23, 21, 31, 0.45);
+}
+.routeFill {
+  width: 5px;
+  margin-left: -1px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--signal);
+  transform-origin: 50% 0;
+  filter: drop-shadow(0 3px 5px rgba(91, 61, 240, 0.35));
+}
+.sailor {
+  position: absolute;
+  left: 0;
+  z-index: 3;
+  width: 56px;
+  height: 56px;
+  margin-top: -28px;
+  pointer-events: none;
+}
+.sailor .wheel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.buoy {
+  position: absolute;
+  left: -44px;
+  top: 22px;
+  z-index: 2;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 22px;
-  margin-top: 26px;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2.5px solid #17151f;
+  border-radius: 50%;
+  background: #fffefb;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  transition:
+    background 0.3s,
+    color 0.3s,
+    transform 0.3s;
+}
+.buoyOn {
+  background: var(--signal);
+  color: #fff;
+  transform: scale(1.15);
+}
+.stack .panel {
+  overflow: visible;
 }
 
 @media (max-width: 1100px) {
