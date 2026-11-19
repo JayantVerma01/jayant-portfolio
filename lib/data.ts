@@ -382,7 +382,7 @@ export const navLinks = [
 export const kpis = [
   { value: 2, suffix: "+", label: "Years shipping" },
   { value: 10, suffix: "+", label: "Projects built" },
-  { value: 1500, suffix: "+", label: "Commits on BuildSync" },
+  { value: 1500, suffix: "+", label: "Commits" },
 ];
 
 /**

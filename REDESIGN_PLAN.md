@@ -58,7 +58,7 @@ Your portfolio is a **staff ID badge on a lanyard** (from Angel/Kwon) that **pla
 - Physics lanyard badge (rapier): draggable, swings, tilts with cursor; badge shows photo, name, "Full Stack · AI Engineer", QR → LinkedIn, "Available" chip.
 - Giant name type behind with gradient split; rotating roles (AI Full Stack / Next.js / Node.js…).
 - **Press-play button on the badge** → intro audio (see §5). Mobile: static tilt badge, same play button.
-- Three KPI counters (2+ yrs, 10+ projects, 1500+ commits on BuildSync) with count-up.
+- Three KPI counters (2+ yrs, 10+ projects, 1500+ commits) with count-up.
 - **Done when:** 60fps desktop, graceful static fallback, audio plays on tap only.
 
 ### Phase 3 — About ("The tape so far")
