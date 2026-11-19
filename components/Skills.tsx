@@ -306,7 +306,7 @@ function StackCard({
   const scale = useTransform(cover, [0, 1], [1, 0.93]);
   const dim = useTransform(cover, [0, 1], [1, 0.8]);
   // Luffy hops onto the card as it slides in
-  const inView = useInView(ref, { margin: "0px 0px -42% 0px", once: true });
+  const inView = useInView(ref, { margin: "0px 0px -42% 0px" });
   useEffect(() => {
     if (!inView) return;
     perchOn(ref.current);

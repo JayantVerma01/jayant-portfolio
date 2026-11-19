@@ -407,12 +407,8 @@
     flex: none;
     padding: 7px 13px;
   }
-  .card {
-    padding: 14px 16px;
-  }
-  .tree a,
-  .remotes a {
-    padding: 9px 8px;
+  .side {
+    display: none;
   }
   .base {
     margin-top: 28px;

@@ -368,3 +368,18 @@
     transition: none;
   }
 }
+
+@media (min-width: 700px) {
+  .gridCard {
+    max-width: 640px;
+    margin-inline: auto;
+    height: 380px;
+  }
+}
+
+@media (min-width: 700px) {
+  .gridCard {
+    max-width: 470px;
+    height: 372px;
+  }
+}

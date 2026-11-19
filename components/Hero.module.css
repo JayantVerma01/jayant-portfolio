@@ -328,3 +328,33 @@
     transform: rotate(-2deg);
   }
 }
+
+/* portrait tablets: copy on top, the ID card below, no empty screens */
+@media (min-width: 700px) and (max-aspect-ratio: 11/10) {
+  .hero {
+    min-height: auto;
+    align-items: flex-start;
+    padding: calc(var(--nav-height) + 64px) 0 64px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 56px;
+    justify-items: center;
+  }
+  .copy {
+    max-width: 640px;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .title {
+    font-size: clamp(3.6rem, 9.5vw, 5.6rem);
+  }
+  .sub {
+    font-size: 1.15rem;
+    max-width: 52ch;
+  }
+  .staticBadge {
+    zoom: 1.15;
+    margin: 0 auto;
+  }
+}

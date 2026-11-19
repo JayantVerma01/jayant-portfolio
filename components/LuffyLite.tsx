@@ -23,6 +23,15 @@ const SECTIONS: [string, string][] = [
   ["contact", "Say hi!"],
   ["footer", "Shishishi!"],
 ];
+const UP_SAY: Record<string, string> = {
+  home: "Back to the top!",
+  about: "Remember me?",
+  skills: "Cards again!",
+  projects: "One more look!",
+  experience: "Back at sea!",
+  process: "Steer her!",
+  contact: "Almost there!",
+};
 const TAPS = ["Gomu Gomu!", "Pistol!", "Shishishi!", "Yosha!"];
 const PERCH_Q =
   ":is(h2, article, figure, li, [class*=card], [class*=Card], [class*=staticBadge], [class*=poster], [class*=panel], [class*=plank], [class*=island], [class*=card], [class*=seal], [class*=step], [class*=letter])";
@@ -62,17 +71,22 @@ export default function LuffyLite() {
     const el = stage.current;
     if (!el) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let W = window.innerWidth;
-    let H = window.innerHeight;
+    // the real visible area (a page that overflows sideways must not push him off screen)
+    const vv = window.visualViewport;
+    const vw = () => Math.max(200, Math.min(window.innerWidth, document.documentElement.clientWidth || 9999, vv?.width ?? 9999));
+    const vh = () => Math.max(200, Math.min(window.innerHeight, vv?.height ?? 9999));
+    let W = vw();
+    let H = vh();
     const small = () => W < 600;
-    const sizeOf = () => (small() ? 92 : 128) / HEIGHT;
-    const homeX = () => W - (small() ? 40 : 64);
-    const awayX = () => (small() ? 44 : 70);
+    const sizeOf = () => (small() ? 80 : 114) / HEIGHT;
+    const homeX = () => W - (small() ? 38 : 60);
+    const awayX = () => (small() ? 40 : 66);
     const onResize = () => {
-      W = window.innerWidth;
-      H = window.innerHeight;
+      W = vw();
+      H = vh();
     };
     window.addEventListener("resize", onResize);
+    vv?.addEventListener("resize", onResize);
 
     const L = { x: homeX(), y: H - 10, dir: -1 as 1 | -1, walk: 0, hop: 0 };
     let lastY = window.scrollY;
@@ -80,7 +94,11 @@ export default function LuffyLite() {
     let still0 = 0; // seconds since the page last moved
     let wave = -1;
     let pistol: { t: number; to: Pt } | null = null;
-    let grab = 0; // 0..1 how hard he is holding on to the page
+    let grab = 0; // 0..1 how hard he is holding on to the page (scrolling down: right hand)
+    let grabL = 0; // scrolling up: left hand
+    let gripW = 0; // holding the Process ship's wheel
+    let lastSecIdx = -1;
+    let wooAt = 0;
     let hopT = -1;
     let sec = "";
     let slow = 0;
@@ -100,6 +118,7 @@ export default function LuffyLite() {
     let landAt = -1;
     let poked = false;
     let hopTarget: Pt = { x: 0, y: 0 };
+    let wheelLast: Pt = { x: 0, y: 0 };
     let seenPerch = luffyPerch.id;
     let seenPunch = luffyPunch.id;
     let seenTalk = luffyTalk.id;
@@ -155,9 +174,12 @@ export default function LuffyLite() {
         if (cur && cur !== sec) {
           const first = sec === "";
           sec = cur;
+          const idx = SECTIONS.findIndex((s) => s[0] === cur);
+          const up = lastSecIdx >= 0 && idx < lastSecIdx;
+          lastSecIdx = idx;
           if (!first) {
             hopT = 0;
-            talk(SECTIONS.find((s) => s[0] === cur)?.[1] ?? "Yosha!", 1.7);
+            talk(up ? (UP_SAY[cur] ?? "Back again!") : (SECTIONS[idx]?.[1] ?? "Yosha!"), 1.7);
           }
         }
       }
@@ -190,7 +212,7 @@ export default function LuffyLite() {
       }
 
       // where he lives: the corner (left side while the contact form is up), or on a card
-      const wantX = sec === "contact" ? awayX() : homeX();
+      const wantX = sec === "contact" || sec === "process" ? awayX() : homeX();
       const cornerY = H - 10;
       const perchPoint = (): Pt | null => {
         if (!perchEl) return null;
@@ -254,7 +276,7 @@ export default function LuffyLite() {
         if (sliding) L.dir = dx > 0 ? 1 : -1;
         else if (!pistol) L.dir = L.x > W / 2 ? -1 : 1;
         // idle for a moment: pick a card in view and leap onto it
-        if (still0 > 1.3 && time > nextPerch && !pistol && sec) {
+        if (still0 > 1.3 && time > nextPerch && !pistol && sec && sec !== "process") {
           const cands = [...document.querySelectorAll(`#${sec} ${PERCH_Q}`)]
             .map((n) => ({ n, r: n.getBoundingClientRect() }))
             .filter(({ n }) => {
@@ -288,7 +310,23 @@ export default function LuffyLite() {
       const bob = walking ? Math.abs(Math.sin(L.walk)) * 3 : Math.sin(time * 2) * 1.4;
 
       // right arm: tap pistol, or grabbing the page when you fling
-      grab += ((speed > 1100 ? 1 : 0) - grab) * Math.min(1, dt * 6);
+      grab += ((vel > 600 ? 1 : 0) - grab) * Math.min(1, dt * 6);
+      grabL += ((vel < -600 ? 1 : 0) - grabL) * Math.min(1, dt * 6);
+      if (speed > 1500 && time - wooAt > 4 && !perchEl) {
+        wooAt = time;
+        talk(vel > 0 ? "Wheee!" : "Whoa!", 1.2);
+      }
+      // the Process wheel sails down the route: hold on to it
+      let wheel: Pt | null = null;
+      if (sec === "process" && !perchEl && !hop && Math.abs(L.x - awayX()) < 10) {
+        const wEl = document.querySelector("#process [class*=sailor]");
+        if (wEl) {
+          const r = wEl.getBoundingClientRect();
+          if (r.top > 70 && r.top < H - 20) wheel = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+        }
+      }
+      gripW += ((wheel ? 1 : 0) - gripW) * Math.min(1, dt * 7);
+      if (wheel) L.dir = wheel.x < L.x ? -1 : 1;
       const toLocal = (p: Pt): Pt => ({ x: (L.dir * (p.x - L.x)) / S, y: (p.y - L.y) / S });
       const restR: Pt = { x: 44 + (walking ? Math.sin(L.walk + Math.PI) * 6 : 0), y: -40 };
       let tR = restR;
@@ -306,9 +344,12 @@ export default function LuffyLite() {
           wR = p < 0.4 ? 1 - Math.pow(1 - p / 0.4, 3) : 1 - (p - 0.4) / 0.6;
           tR = toLocal(pistol.to);
         }
+      } else if (wheel || gripW > 0.03) {
+        if (wheel) wheelLast = wheel;
+        tR = toLocal(wheelLast);
+        wR = gripW;
       } else if (grab > 0.02) {
-        // reach up toward where the page is coming from and hold on
-        // short, so the arm never sweeps across the content
+        // scrolling down: reach up and drag the page along
         tR = { x: 56, y: -76 - 120 };
         wR = grab;
       }
@@ -320,7 +361,12 @@ export default function LuffyLite() {
       if (still0 === 0) wave = -1;
       let hlx = -44 + (walking ? Math.sin(L.walk) * 6 : 0);
       let hly = -40;
-      if (wave >= 0) {
+      if (grabL > 0.02) {
+        // scrolling up: the left hand drags the page back down
+        hlx += (-56 - hlx) * grabL;
+        hly += (-76 - 120 - hly) * grabL;
+        wave = -1;
+      } else if (wave >= 0) {
         wave += dt;
         const k = Math.min(1, wave * 4) * (wave > 1.6 ? Math.max(0, 1 - (wave - 1.6) * 4) : 1);
         if (wave > 2) wave = -1;
@@ -373,6 +419,7 @@ export default function LuffyLite() {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("pointerdown", onTap);
+      vv?.removeEventListener("resize", onResize);
     };
   }, []);
 

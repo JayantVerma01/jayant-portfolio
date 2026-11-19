@@ -519,14 +519,75 @@
   .title {
     font-size: clamp(2.2rem, 10vw, 3rem);
   }
+  .head {
+    margin-bottom: 22px;
+  }
+  .sub {
+    font-size: 0.95rem;
+  }
+  .postCol {
+    gap: 14px;
+  }
+  /* the signpost becomes a tidy board of wooden tags */
   .post {
-    padding: 46px 0 28px;
+    padding: 0;
+  }
+  .pole,
+  .cap {
+    display: none;
   }
   .signs {
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
-  .sign {
-    width: min(100%, 330px);
+  .sign,
+  .signR,
+  .signL {
+    width: 100%;
+    transform: none;
+    justify-content: stretch;
+  }
+  .sign:first-child {
+    grid-column: 1 / -1;
+  }
+  .signShape {
+    width: 100%;
+    filter: none;
+    border: 2.5px solid #14110f;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 4px 5px 0 rgba(23, 21, 31, 0.85);
+  }
+  .signR .plank,
+  .signL .plank {
+    clip-path: none;
+    padding: 10px 12px 10px 16px;
+    min-height: 66px;
+    column-gap: 8px;
+  }
+  .nail,
+  .signR .nail,
+  .signL .nail {
+    left: 7px;
+    right: auto;
+    width: 7px;
+    height: 7px;
+  }
+  .plankLabel {
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+  }
+  .plankValue {
+    font-size: 0.86rem;
+    line-height: 1.2;
+  }
+  .plankIcon {
+    width: 30px;
+    height: 30px;
+  }
+  .sign:first-child .plankValue {
+    font-size: 1rem;
   }
   .letterCol {
     align-items: stretch;

@@ -596,7 +596,31 @@
     font-size: 0.95rem;
   }
 }
+@media (min-width: 561px) and (max-width: 899px) {
+  .posterWrap {
+    zoom: 0.8;
+    width: 360px;
+    margin-inline: auto;
+  }
+  .stop {
+    grid-template-columns: minmax(0, 1fr) 190px;
+  }
+  .right {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+  .final {
+    grid-template-columns: 1fr;
+  }
+  .final .islandCell {
+    width: min(230px, 50%);
+    margin-inline: auto;
+  }
+}
 @media (max-width: 560px) {
+  .final .islandCell {
+    width: min(190px, 62%);
+    margin-inline: auto;
+  }
   .steps {
     grid-template-columns: 1fr;
   }

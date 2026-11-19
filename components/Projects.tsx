@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Code2 } from "lucide-react";
 import { projects } from "@/lib/data";
 import { perchOn, punchAt } from "./hero/store";
-import { useRich3D } from "@/hooks/useRich3D";
+import { useGallery3D } from "@/hooks/useRich3D";
 import type { Project } from "./projects/cover";
 import styles from "./Projects.module.css";
 
@@ -102,7 +102,7 @@ function Detail({ p }: { p: Project }) {
 }
 
 export default function Projects() {
-  const rich = useRich3D();
+  const rich = useGallery3D();
   const sectionRef = useRef<HTMLElement>(null);
   // Only fetch the 3D bundle once the section is near the viewport.
   const [near, setNear] = useState(false);

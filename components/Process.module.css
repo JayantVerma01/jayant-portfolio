@@ -338,3 +338,98 @@
     width: min(30svh, 60vw);
   }
 }
+
+@media (max-width: 699px) {
+  .stackSection .title {
+    font-size: clamp(1.9rem, 8.4vw, 2.5rem);
+  }
+  .routeSub {
+    font-size: 0.88rem;
+  }
+}
+
+/* phones: compact step cards */
+@media (max-width: 699px) {
+  .stack {
+    gap: 16px;
+    padding-left: 50px;
+  }
+  .stack .panel {
+    padding: 14px 14px 12px;
+    border-width: 2.5px;
+    border-radius: 18px;
+    box-shadow: 5px 6px 0 rgba(23, 21, 31, 0.92);
+  }
+  .stack .icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    float: left;
+    margin: 0 10px 0 0;
+  }
+  .stack .icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .stack .kicker {
+    font-size: 0.6rem;
+    padding-top: 2px;
+  }
+  .stack .stepTitle {
+    margin-top: 2px;
+    font-size: 1.4rem;
+  }
+  .stack .body {
+    clear: both;
+    margin-top: 8px;
+    font-size: 0.86rem;
+    line-height: 1.45;
+  }
+  .stack .outs {
+    margin-top: 10px;
+    gap: 5px;
+  }
+  .stack .outs li {
+    padding: 2px 9px;
+    font-size: 0.64rem;
+  }
+  .stack .bigNo {
+    font-size: 3.4rem;
+    top: 2px;
+    right: 8px;
+  }
+  .buoy {
+    left: -38px;
+    top: 14px;
+    width: 26px;
+    height: 26px;
+    font-size: 0.68rem;
+  }
+  .sailor {
+    width: 48px;
+    height: 48px;
+    margin-top: -24px;
+    left: -2px;
+  }
+  .routeLine,
+  .routeFill {
+    left: 24px;
+  }
+}
+
+@media (min-width: 700px) {
+  .stackSection .title {
+    font-size: 3rem;
+  }
+  .stack {
+    max-width: 680px;
+    margin-inline: auto;
+    gap: 22px;
+  }
+  .stackSection .container > .tag,
+  .stackSection .container > .title,
+  .stackSection .container > .routeSub {
+    max-width: 680px;
+    margin-inline: auto;
+  }
+}

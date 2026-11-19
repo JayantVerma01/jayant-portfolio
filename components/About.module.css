@@ -305,3 +305,41 @@
     animation: none;
   }
 }
+
+@media (min-width: 700px) and (max-aspect-ratio: 11/10) {
+  .panel {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 36px;
+    align-items: start;
+  }
+  .portraitCol {
+    height: auto;
+    width: 100%;
+    max-width: 330px;
+    aspect-ratio: 4 / 5;
+  }
+  .details {
+    gap: 24px;
+  }
+  .title {
+    font-size: 2.3rem;
+  }
+  .numbers strong {
+    font-size: 3.2rem;
+  }
+}
+
+@media (min-width: 700px) and (max-aspect-ratio: 11/10) {
+  .now {
+    display: none;
+  }
+  .panel {
+    align-items: stretch;
+  }
+  .portraitCol {
+    height: auto;
+    aspect-ratio: auto;
+    max-width: none;
+    min-height: 440px;
+  }
+}
