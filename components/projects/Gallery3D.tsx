@@ -4,7 +4,7 @@ import "@/lib/quietThree";
 
 import * as THREE from "three";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useInView } from "@/hooks/useInView";
 import { COVER_H, COVER_W, drawCover, type Project } from "./cover";
 
@@ -19,6 +19,17 @@ function markDirty(t: THREE.Texture) {
 }
 function setOpacity(m: THREE.Material | THREE.Material[], v: number) {
   (Array.isArray(m) ? m[0] : m).opacity = v;
+}
+
+/** On narrow screens, pull the camera so the front card fills ~80% of the width. */
+function fitCamera(cam: THREE.Camera, aspect: number, narrow: boolean) {
+  const persp = cam as THREE.PerspectiveCamera;
+  if (!narrow) {
+    cam.position.z = 1.5;
+    return;
+  }
+  const d = CARD_W / 0.72 / (2 * Math.tan(THREE.MathUtils.degToRad(persp.fov / 2)) * aspect);
+  cam.position.z = d - RADIUS;
 }
 
 function useCoverTextures(list: Project[]) {
@@ -117,6 +128,11 @@ function Rig({
 }) {
   const textures = useCoverTextures(list);
   const pos = useRef(active);
+  const camera = useThree((s) => s.camera);
+  const size = useThree((s) => s.size);
+  useEffect(() => {
+    fitCamera(camera, size.width / size.height, size.width < 700);
+  }, [camera, size.width, size.height]);
 
   useFrame((_, dt) => {
     const target = active + drag.current;
@@ -156,7 +172,7 @@ export default function Gallery3D({
       aria-label="Featured projects"
       tabIndex={0}
       style={{
-        height: "clamp(320px, 46vw, 520px)",
+        height: "clamp(250px, 46vw, 520px)",
         cursor: grabbing ? "grabbing" : "grab",
         touchAction: "pan-y",
         outlineOffset: 4,

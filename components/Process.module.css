@@ -23,6 +23,7 @@
 }
 .head {
   position: relative;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -119,6 +120,7 @@
   border: 2px solid #14110f;
   border-radius: 999px;
   background: #fffefb;
+  color: #17151f;
   font-family: var(--font-mono), monospace;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
@@ -157,6 +159,11 @@
   border: 3px solid #17151f;
   border-radius: 24px;
   background: #fffefb;
+  /* paper surface: keep ink-on-paper colours in dark mode too */
+  --paper: #17151f;
+  --paper-dim: #55525c;
+  --signal-text: #5b3df0;
+  color: #17151f;
   box-shadow: 9px 11px 0 rgba(23, 21, 31, 0.92);
   overflow: hidden;
 }
@@ -232,6 +239,7 @@
   border: 2.5px solid #17151f;
   border-radius: 50%;
   background: #fffefb;
+  color: #17151f;
   font-family: var(--font-mono), monospace;
   font-size: 0.74rem;
   font-weight: 700;
@@ -312,6 +320,7 @@
   border: 2.5px solid #17151f;
   border-radius: 50%;
   background: #fffefb;
+  color: #17151f;
   font-family: var(--font-mono), monospace;
   font-size: 0.74rem;
   font-weight: 700;
@@ -422,14 +431,8 @@
     font-size: 3rem;
   }
   .stack {
-    max-width: 680px;
+    max-width: 760px;
     margin-inline: auto;
     gap: 22px;
-  }
-  .stackSection .container > .tag,
-  .stackSection .container > .title,
-  .stackSection .container > .routeSub {
-    max-width: 680px;
-    margin-inline: auto;
   }
 }

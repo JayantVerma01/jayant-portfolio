@@ -350,7 +350,7 @@
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--c);
+  color: color-mix(in srgb, var(--c) 62%, #17151f);
 }
 .bountyChips {
   list-style: none;
@@ -397,7 +397,7 @@
   font-size: 0.58rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(42, 33, 24, 0.55);
+  color: rgba(42, 33, 24, 0.72);
   text-align: center;
 }
 .shine {
@@ -419,7 +419,7 @@
   font-size: 0.66rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--c);
+  color: color-mix(in srgb, var(--c) 62%, #17151f);
   font-weight: 700;
 }
 .desc {

@@ -126,7 +126,7 @@
   text-align: right;
   font-family: var(--font-mono), monospace;
   font-size: 0.7rem;
-  color: rgba(43, 42, 54, 0.4);
+  color: rgba(43, 42, 54, 0.6);
 }
 .body {
   height: clamp(250px, 32vh, 330px);
@@ -169,7 +169,7 @@
   align-self: center;
 }
 .dim {
-  color: #8a8fa3;
+  color: #6f748a;
 }
 .tlink {
   color: #0b7285;
@@ -280,7 +280,7 @@
   outline: 2px solid var(--signal);
 }
 .branch {
-  color: #a3a8bb;
+  color: #7d8297;
 }
 .arrow {
   margin-left: auto;
@@ -296,7 +296,7 @@
 }
 .remotes a span {
   margin-left: auto;
-  color: #8a8fa3;
+  color: #6f748a;
   font-size: 0.72rem;
   overflow-wrap: anywhere;
   text-align: right;

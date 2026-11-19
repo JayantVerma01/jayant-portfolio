@@ -218,7 +218,7 @@ function Route({ wrap }: { wrap: React.RefObject<HTMLDivElement | null> }) {
 
 export default function Experience() {
   const wrap = useRef<HTMLDivElement>(null);
-  const voyage = experience; // current role first, then the earlier ones
+  const voyage = [...experience].reverse(); // earliest port first, the current role last
 
   return (
     <section id="experience" className={`section ${styles.experience}`}>

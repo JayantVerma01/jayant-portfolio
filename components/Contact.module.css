@@ -236,6 +236,7 @@
   border: 2.5px solid #14110f;
   border-radius: 50%;
   background: #fffefb;
+  color: #14110f;
 }
 
 /* ── the letter ── */
@@ -255,6 +256,11 @@
     linear-gradient(90deg, transparent 0 clamp(34px, 3.4vw, 50px), rgba(217, 55, 47, 0.45) clamp(34px, 3.4vw, 50px) calc(clamp(34px, 3.4vw, 50px) + 2px), transparent calc(clamp(34px, 3.4vw, 50px) + 2px)),
     repeating-linear-gradient(0deg, transparent 0 33px, rgba(90, 120, 190, 0.22) 33px 34px),
     #f7edd3;
+  /* paper surface: keep ink-on-paper colours in dark mode too */
+  --paper: #17151f;
+  --paper-dim: #55525c;
+  --signal-text: #5b3df0;
+  color: #17151f;
   box-shadow:
     9px 11px 0 rgba(23, 21, 31, 0.9),
     inset 0 0 0 5px #f7edd3,

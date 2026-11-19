@@ -45,7 +45,6 @@ const PERCH_SAY: Record<string, string[]> = {
   contact: ["Write a letter!", "Say hi!"],
   footer: ["Meat?!", "Nice terminal!"],
 };
-const SOFT = "section, article, li, figure, img, h1, h2, h3, p, blockquote";
 
 export default function LuffyLite() {
   const stage = useRef<HTMLDivElement>(null);
@@ -129,25 +128,11 @@ export default function LuffyLite() {
     };
 
     const onTap = (e: PointerEvent) => {
+      // Only tapping Luffy himself reacts; touching the page no longer fires a punch.
       const S = sizeOf();
-      const tgt = e.target as Element | null;
       if (Math.hypot(e.clientX - L.x, e.clientY - (L.y - 70 * S)) < 60 * S + 14) {
         hopT = 0;
         talk(TAPS[tapIdx++ % TAPS.length]);
-        return;
-      }
-      if (tgt?.closest("a, button, input, textarea, select, label, [role=button]")) return;
-      pistol = { t: 0, to: { x: e.clientX, y: e.clientY } };
-      L.dir = e.clientX < L.x ? -1 : 1;
-      talk(TAPS[tapIdx++ % TAPS.length], 1.1);
-      const hit = tgt?.closest?.(SOFT) as HTMLElement | null;
-      if (hit && hit !== document.body) {
-        window.setTimeout(() => {
-          hit.classList.remove("jelly");
-          void hit.offsetWidth;
-          hit.classList.add("jelly");
-          window.setTimeout(() => hit.classList.remove("jelly"), 760);
-        }, 240);
       }
     };
     document.addEventListener("pointerdown", onTap, { passive: true });

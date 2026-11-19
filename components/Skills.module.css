@@ -129,7 +129,7 @@
   font-size: 0.68rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(43, 42, 54, 0.5);
+  color: rgba(43, 42, 54, 0.62);
 }
 
 /* ── front: a light code-editor window ── */
@@ -240,7 +240,7 @@
   width: 2.4em;
   padding-right: 10px;
   text-align: right;
-  color: rgba(43, 42, 54, 0.3);
+  color: rgba(43, 42, 54, 0.62);
   user-select: none;
 }
 .src {
@@ -279,7 +279,7 @@
   color: #7c8094;
 }
 .c {
-  color: #9aa1b5;
+  color: #747b92;
   font-style: italic;
 }
 

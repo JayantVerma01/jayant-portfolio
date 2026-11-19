@@ -38,9 +38,8 @@ export function useRich3D() {
 }
 
 function detectGallery() {
-  const wide = window.matchMedia("(min-width: 700px)").matches;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!wide || reduced) return false;
+  if (reduced) return false;
   try {
     const c = document.createElement("canvas");
     return !!(c.getContext("webgl2") || c.getContext("webgl"));
@@ -49,18 +48,12 @@ function detectGallery() {
   }
 }
 
-/** The 3D project carousel works on any screen from tablet up, portrait or landscape. */
+/** The 3D project carousel works on every screen size (phone, tablet and desktop). */
 export function useGallery3D() {
   const [on, setOn] = useState<boolean | null>(null);
   useEffect(() => {
     const id = setTimeout(() => setOn(detectGallery()), 0);
-    const mq = window.matchMedia("(min-width: 700px)");
-    const onChange = () => setOn(detectGallery());
-    mq.addEventListener("change", onChange);
-    return () => {
-      clearTimeout(id);
-      mq.removeEventListener("change", onChange);
-    };
+    return () => clearTimeout(id);
   }, []);
   return on;
 }
